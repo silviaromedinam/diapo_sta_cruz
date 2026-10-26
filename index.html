@@ -338,27 +338,32 @@
       font-weight: 700;
     }
 
-    /* HERO SLIDE 1 */
+    /* HERO SLIDE 1 - EXPANDED FULL VIEWPORT IMPACT */
     .hero-banner {
       position: relative;
-      border-radius: 32px;
+      width: 100%;
+      min-height: 86vh;
+      display: flex;
+      align-items: center;
+      border-radius: 36px;
       overflow: hidden;
       background:
-        radial-gradient(circle at 86% 18%, rgba(217, 93, 57, 0.32) 0%, transparent 48%),
-        radial-gradient(circle at 85% 90%, rgba(42, 157, 143, 0.30) 0%, transparent 52%),
+        radial-gradient(circle at 86% 18%, rgba(217, 93, 57, 0.34) 0%, transparent 48%),
+        radial-gradient(circle at 85% 90%, rgba(42, 157, 143, 0.32) 0%, transparent 52%),
         linear-gradient(125deg, rgba(11, 21, 40, 0.88) 0%, rgba(19, 34, 56, 0.78) 55%, rgba(26, 46, 73, 0.72) 100%),
         url('assets/santa_cruz_qhubo.jpg') center/cover no-repeat;
       border: none;
-      padding: 48px 46px;
-      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
-      margin-bottom: 24px;
+      padding: clamp(3rem, 5.5vw, 6rem) clamp(2.8rem, 5vw, 5.5rem);
+      box-shadow: 0 35px 90px rgba(0, 0, 0, 0.6);
+      margin-bottom: 0;
     }
 
     .hero-grid {
       display: grid;
-      grid-template-columns: 1.35fr 0.85fr;
-      gap: 34px;
+      grid-template-columns: 1.3fr 0.9fr;
+      gap: clamp(2.2rem, 4.5vw, 4.5rem);
       align-items: center;
+      width: 100%;
     }
 
     @media (max-width: 960px) {
@@ -368,55 +373,57 @@
     .hero-quote {
       font-family: 'Playfair Display', Georgia, serif;
       font-style: italic;
-      font-size: 1.18rem;
+      font-size: clamp(1.25rem, 1.8vw, 1.55rem);
       color: var(--amber);
       background: transparent;
       border: none;
-      padding: 6px 0;
-      margin: 18px 0;
+      padding: 8px 0;
+      margin: 24px 0;
       box-shadow: none;
       text-shadow: 0 2px 16px rgba(0, 0, 0, 0.6);
+      line-height: 1.45;
     }
 
     .stat-pill-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
+      gap: 20px;
     }
 
     .stat-box {
-      background: rgba(15, 28, 48, 0.62);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      background: rgba(15, 28, 48, 0.64);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
       border: none;
-      border-radius: 20px;
-      padding: 20px 16px;
+      border-radius: 24px;
+      padding: clamp(1.6rem, 2.5vw, 2.3rem) clamp(1.2rem, 1.8vw, 1.6rem);
       text-align: center;
-      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.32);
+      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.36);
       transition: transform 0.28s ease, background 0.28s ease;
     }
 
     .stat-box:hover {
-      transform: translateY(-4px);
-      background: rgba(22, 40, 68, 0.72);
+      transform: translateY(-5px);
+      background: rgba(22, 40, 68, 0.74);
     }
 
     .stat-num {
-      font-size: 1.75rem;
+      font-size: clamp(2.1rem, 3.2vw, 2.8rem);
       font-weight: 800;
       color: var(--terracotta-light);
       letter-spacing: -0.03em;
       display: block;
-      text-shadow: 0 0 30px rgba(240, 123, 88, 0.35);
+      text-shadow: 0 0 32px rgba(240, 123, 88, 0.4);
     }
 
     .stat-label {
-      font-size: 0.8rem;
+      font-size: clamp(0.88rem, 1.05vw, 0.98rem);
       color: var(--text-muted);
-      margin-top: 6px;
+      margin-top: 10px;
       display: block;
       background: transparent;
       padding: 0;
+      line-height: 1.45;
     }
 
     /* PALETTE EXPLAINER BAR */
@@ -800,22 +807,22 @@
       <div class="hero-banner">
         <div class="hero-grid">
           <div>
-            <div class="kicker">📍 Investigación Territorial en Salud Pública • Comuna 1 de Itagüí, Antioquia</div>
-            <h1 style="font-size: clamp(1.8rem, 3.2vw, 2.85rem); font-weight: 800; color: #fff; line-height: 1.15;">
+            <div class="kicker" style="font-size: 0.85rem; padding: 7px 16px; margin-bottom: 16px;">📍 Investigación Territorial en Salud Pública • Comuna 1 de Itagüí, Antioquia</div>
+            <h1 style="font-size: clamp(2.5rem, 4.6vw, 4.1rem); font-weight: 800; color: #fff; line-height: 1.08; letter-spacing: -0.03em;">
               Barrio La Santa Cruz:<br>
               <span style="color: var(--terracotta-light);">“Aprender a Mirar la Salud Pública”</span>
             </h1>
             <blockquote class="hero-quote">
               “Aprender a mirar hasta llegar a ver y que se nos abran los ojos: los de la sensibilidad y los de la razón... La salud no la elige quien quiere sino quien puede.”
-              <div style="font-size: 0.85rem; font-style: normal; color: var(--text-muted); margin-top: 6px;">— Joan Benach & Carles Muntaner (2005)</div>
+              <div style="font-size: 0.95rem; font-style: normal; color: var(--text-muted); margin-top: 8px;">— Joan Benach & Carles Muntaner (2005)</div>
             </blockquote>
-            <p style="color: var(--text-main); font-size: 0.95rem; margin-bottom: 18px;">
+            <p style="color: var(--text-main); font-size: clamp(1.02rem, 1.3vw, 1.18rem); margin-bottom: 26px; line-height: 1.6;">
               Análisis integral de las <strong>condiciones de vida, modos de vida y estilos de vida</strong>, las <strong>fronteras de segregación socioespacial</strong> frente a la gran industria y sectores de altos ingresos, y el proceso salud-enfermedad colectivo en un territorio que resistió 40 años de olvido estatal.
             </p>
-            <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-              <button class="btn-control active-mode" onclick="goToSlide(2)">🗺️ Explorar Mapa Interactivo</button>
-              <button class="btn-control" onclick="goToSlide(4)">⏳ Ver Antes y Después (1970–2026)</button>
-              <button class="btn-control" onclick="goToSlide(5)">🚧 Analizar la “Frontera Social”</button>
+            <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+              <button class="btn-control active-mode" style="padding: 12px 22px; font-size: 0.95rem;" onclick="goToSlide(2)">🗺️ Explorar Mapa Interactivo</button>
+              <button class="btn-control" style="padding: 12px 22px; font-size: 0.95rem;" onclick="goToSlide(4)">⏳ Ver Antes y Después (1970–2026)</button>
+              <button class="btn-control" style="padding: 12px 22px; font-size: 0.95rem;" onclick="goToSlide(5)">🚧 Analizar la “Frontera Social”</button>
             </div>
           </div>
 
