@@ -792,7 +792,7 @@
   </div>
 
   <!-- NÚMERO DE DIAPOSITIVA EN ESQUINA INFERIOR DERECHA -->
-  <div class="corner-slide-num" id="slideCounter">01 / 12</div>
+  <div class="corner-slide-num" id="slideCounter">01 / 13</div>
 
   <!-- LIGHTBOX -->
   <div class="lightbox" id="lightbox" onclick="closeLightbox()">
@@ -1054,68 +1054,108 @@
       </div>
     </section>
 
-    <!-- ==================== SLIDE 6: LA FRONTERA SOCIAL EN SALUD PÚBLICA ==================== -->
-    <section class="slide" data-title="La Frontera Social">
+    <!-- ==================== SLIDE 6: LA FRONTERA SOCIAL (PARTE 1: SOCIEDAD ARCHIPIÉLAGO) ==================== -->
+    <section class="slide" data-title="Frontera Social I: Sociedad Archipiélago">
       <div class="slide-header">
         <div>
-          <div class="kicker">⚖️ Categoría Crítica</div>
-          <h2 class="slide-title">La “Frontera Social” en Salud Pública</h2>
+          <div class="kicker">⚖️ Categoría Crítica • Parte 1 de 2</div>
+          <h2 class="slide-title">La “Frontera Social” y la “Sociedad Archipiélago”</h2>
+          <p class="slide-subtitle">El contraste entre el enclave popular de La Santa Cruz y las zonas vecinas inmediatas con mejores condiciones de vida.</p>
         </div>
       </div>
 
-      <div class="grid-4" style="margin-bottom: 18px;">
-        <div class="card card-terracotta">
-          <h3>1. Sociedad Archipiélago</h3>
-          <p><strong>Benach (p. 43):</strong> Islas de privilegio inmobiliario junto a enclaves populares.</p>
+      <div class="grid-2" style="align-items: center;">
+        <div class="grid-2" style="gap: 16px;">
+          <div class="card card-terracotta">
+            <h3>1. Sociedad Archipiélago</h3>
+            <p><strong>Benach (p. 43):</strong> Islas de privilegio inmobiliario junto a enclaves populares separados solo por una vía.</p>
+          </div>
+          <div class="card card-amber">
+            <h3>2. Pobreza Relativa</h3>
+            <p><strong>Wilkinson (p. 54):</strong> Ser pobre junto a una zona rica multiplica el estrés neuroendocrino.</p>
+          </div>
+          <div class="card card-teal">
+            <h3>3. Efecto de Barrio</h3>
+            <p><strong>Diez-Roux (p. 53):</strong> El entorno físico condiciona el riesgo cardiovascular, respiratorio y mental.</p>
+          </div>
+          <div class="card card-terracotta">
+            <h3>4. Injusticia Ambiental</h3>
+            <p><strong>Ecología Política:</strong> Riqueza empresarial privada vs. humo y ruido colectivizados hacia el barrio.</p>
+          </div>
         </div>
+
         <div class="card card-amber">
-          <h3>2. Pobreza Relativa</h3>
-          <p><strong>Wilkinson (p. 54):</strong> Ser pobre en zona rica eleva el estrés neuroendocrino.</p>
+          <h3>🏝️ El “Archipiélago Urbano”: La Santa Cruz vs. Zona Vecina</h3>
+          <div class="grid-2" style="gap: 12px; margin-top: 10px;">
+            <div class="photo-card">
+              <img src="assets/santa_cruz_qhubo.jpg" alt="Enclave popular Barrio La Santa Cruz" onclick="openLightbox(this.src)" style="height: 165px;" />
+              <div class="photo-caption">
+                <strong>Enclave Popular: La Santa Cruz (Estratos 1–2)</strong>
+                Autoconstrucción de 1–3 pisos sin zonas verdes (< 2 m²/hab).
+              </div>
+            </div>
+            <div class="photo-card">
+              <img src="assets/frontera_envigado_torres.jpg" alt="Zona cercana con mejores condiciones de vida" onclick="openLightbox(this.src)" style="height: 165px;" />
+              <div class="photo-caption">
+                <strong>Zona Vecina: Ciudad Coltejer / Envigado–Mayorca (Estratos 4–6)</strong>
+                Torres cerradas con parques, piscinas, clínicas y arborización.
+              </div>
+            </div>
+          </div>
+          <div class="photo-card" style="margin-top: 12px;">
+            <img src="assets/archipielago_frontera_satelital.jpg" alt="Frontera satelital del archipiélago urbano" onclick="openLightbox(this.src)" style="height: 145px;" />
+            <div class="photo-caption">
+              <strong>Contraste satelital a pocos metros:</strong> El polígono denso de La Santa Cruz rodeado por el nodo comercial Mayorca, Ciudad Coltejer y sectores altos de Envigado y Sabaneta.
+            </div>
+          </div>
         </div>
-        <div class="card card-teal">
-          <h3>3. Efecto de Barrio</h3>
-          <p><strong>Diez-Roux (p. 53):</strong> El código postal condiciona el riesgo cardiovascular y mental.</p>
-        </div>
-        <div class="card card-terracotta">
-          <h3>4. Injusticia Ambiental</h3>
-          <p><strong>Ecología Política:</strong> Riqueza industrial privada vs. humo y ruido colectivizados.</p>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 7: LA FRONTERA SOCIAL (PARTE 2: MATRIZ EN SALUD PÚBLICA) ==================== -->
+    <section class="slide" data-title="Frontera Social II: Impacto en Salud">
+      <div class="slide-header">
+        <div>
+          <div class="kicker">⚖️ Categoría Crítica • Parte 2 de 2</div>
+          <h2 class="slide-title">¿Cómo Opera la Frontera Social en la Salud Colectiva?</h2>
+          <p class="slide-subtitle">Comparación directa entre el barrio La Santa Cruz y su entorno inmediato de mayores ingresos.</p>
         </div>
       </div>
 
-      <div class="styled-table-wrapper">
+      <div class="styled-table-wrapper" style="margin-top: 10px;">
         <table class="data-table">
           <thead>
             <tr>
               <th>Dimensión</th>
-              <th>Barrio La Santa Cruz (Estratos 1–2)</th>
-              <th>Frontera Vecina (Coltejer / Mayorca / Envigado - Estratos 3–6)</th>
-              <th>Impacto en Salud (Mirada Benach)</th>
+              <th>Enclave Popular: Barrio La Santa Cruz (Estratos 1–2)</th>
+              <th>Zona Cercana de Mejores Condiciones (Coltejer / Mayorca / Envigado - Estratos 4–6)</th>
+              <th>Traducción en Salud Pública (Mirada de Benach)</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><strong>1. Hábitat</strong></td>
+              <td><strong>1. Hábitat y Suelo</strong></td>
               <td>Autoconstrucción 1–3 pisos sobre antiguo relleno; < 2 m²/hab de zona verde.</td>
-              <td>Torres cerradas (“Ciudad Coltejer”) con piscinas, gimnasios y parques.</td>
-              <td>Déficit de espacios recreativos y cardioprotectores.</td>
+              <td>Ciudadelas verticales cerradas con piscinas, gimnasios, vigilancia y parques.</td>
+              <td>Déficit de espacios recreativos y cardioprotectores para la niñez.</td>
             </tr>
             <tr>
-              <td><strong>2. Trabajo</strong></td>
+              <td><strong>2. Trabajo y Capital</strong></td>
               <td>Reciclaje, ventas callejeras, confección en casa y operarios tercerizados.</td>
               <td>Grandes industrias, centros logísticos y vitrinas de hiperconsumo (Mayorca).</td>
-              <td>Mayor desgaste físico y menor ingreso (Virchow).</td>
+              <td>Mayor desgaste osteomuscular y menor remuneración (Virchow).</td>
             </tr>
             <tr>
-              <td><strong>3. Ambiente</strong></td>
+              <td><strong>3. Carga Ambiental</strong></td>
               <td>Casas a ras de vía recibiendo humo diésel PM2.5 y ruido >75 dB.</td>
-              <td>Apartamentos en altura con aislamiento acústico y arborización.</td>
-              <td>Sobrecarga de EPOC, asma infantil e insomnio.</td>
+              <td>Apartamentos en altura con aislamiento acústico y mayor arborización.</td>
+              <td>Sobrecarga de EPOC, asma infantil, rinitis e insomnio.</td>
             </tr>
             <tr>
-              <td><strong>4. Atención</strong></td>
+              <td><strong>4. Atención Sanitaria</strong></td>
               <td>Régimen Subsidiado; cruzar la Autopista Sur hacia el Hospital del Sur.</td>
               <td>Torres médicas privadas en Mayorca y medicina prepagada sin filas.</td>
-              <td><strong>Ley Inversa de Atención (Tudor Hart):</strong> más barreras a quien más sufre.</td>
+              <td><strong>Ley Inversa de Atención (Tudor Hart):</strong> mayores barreras a quien más sufre.</td>
             </tr>
           </tbody>
         </table>
