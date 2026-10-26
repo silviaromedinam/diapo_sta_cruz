@@ -1,0 +1,1839 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aprender a Mirar la Salud Pública — Barrio La Santa Cruz de Itagüí</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
+  <!-- Leaflet CSS for Interactive Maps -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    :root {
+      /* Paleta Identitaria: Ladrillo Vivo, Pizarra Industrial/Salubrista, Verde Esperanza y Ámbar Cálido */
+      --bg-deep: #0B1528;
+      --bg-card: #132238;
+      --bg-card-alt: #1A2E49;
+      --terracotta: #D95D39;
+      --terracotta-light: #F07B58;
+      --teal: #2A9D8F;
+      --teal-light: #4AD2C2;
+      --amber: #E9C46A;
+      --amber-dark: #F4A261;
+      --text-main: #F4F7FB;
+      --text-muted: #A9BCD0;
+      --border-subtle: rgba(255, 255, 255, 0.12);
+      --shadow-elevated: 0 20px 45px rgba(0, 0, 0, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-deep);
+      background-image:
+        radial-gradient(circle at 12% 18%, rgba(217, 93, 57, 0.28) 0%, transparent 38%),
+        radial-gradient(circle at 86% 22%, rgba(42, 157, 143, 0.26) 0%, transparent 40%),
+        radial-gradient(circle at 52% 82%, rgba(233, 196, 106, 0.20) 0%, transparent 42%),
+        linear-gradient(160deg, #070F1E 0%, #0D1B32 50%, #091324 100%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      overflow-x: hidden;
+      line-height: 1.55;
+    }
+
+    /* Ambient floating orbs behind glass cards */
+    body::before, body::after {
+      content: "";
+      position: fixed;
+      width: 480px;
+      height: 480px;
+      border-radius: 50%;
+      filter: blur(95px);
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.45;
+      animation: floatOrb 14s ease-in-out infinite alternate;
+    }
+    body::before {
+      top: 8%;
+      left: -80px;
+      background: radial-gradient(circle, rgba(217, 93, 57, 0.55), transparent 70%);
+    }
+    body::after {
+      bottom: 5%;
+      right: -80px;
+      background: radial-gradient(circle, rgba(42, 157, 143, 0.55), transparent 70%);
+      animation-delay: -7s;
+    }
+
+    @keyframes floatOrb {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(45px, -35px) scale(1.12); }
+    }
+
+    .btn-control {
+      background: rgba(16, 30, 52, 0.62);
+      backdrop-filter: blur(14px);
+      color: var(--text-main);
+      border: none;
+      padding: 9px 16px;
+      border-radius: 999px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-control:hover {
+      background: rgba(24, 44, 74, 0.8);
+      transform: translateY(-2px);
+    }
+
+    .btn-control.active-mode {
+      background: var(--terracotta);
+      color: #fff;
+    }
+
+    /* SUBTLE TOP PROGRESS LINE (3px at top: 0) */
+    .progress-bar-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.05);
+      z-index: 2000;
+      pointer-events: none;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--terracotta), var(--amber), var(--teal-light));
+      box-shadow: 0 0 10px rgba(217, 93, 57, 0.55);
+      width: 8.33%;
+      transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* SINGLE MINIMAL SLIDE NUMBER IN BOTTOM RIGHT CORNER */
+    .corner-slide-num {
+      position: fixed;
+      bottom: 22px;
+      right: 28px;
+      font-family: 'Plus Jakarta Sans', monospace;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: rgba(244, 247, 251, 0.52);
+      z-index: 1900;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* PRESENTATION CONTAINER - FULL SCREEN SLIDE BY SLIDE */
+    .deck-container {
+      margin-top: 0;
+      padding-bottom: 0;
+      min-height: 100vh;
+    }
+
+    .slide {
+      display: none;
+      min-height: 100vh;
+      padding: 36px 4.5vw 42px;
+      max-width: 1460px;
+      margin: 0 auto;
+      flex-direction: column;
+      justify-content: center;
+      animation: fadeInSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .slide.active {
+      display: flex;
+    }
+
+    @keyframes fadeInSlide {
+      from { opacity: 0; transform: translateY(14px) scale(0.99); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* SLIDE HEADER - CLEAN DIRECT ON AMBIENT CANVAS (CHANCONCHAN STYLE) */
+    .slide-header {
+      margin-bottom: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 14px;
+      background: transparent;
+      border: none;
+      padding: 0 0 8px 0;
+      box-shadow: none;
+    }
+
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      font-weight: 800;
+      color: var(--amber);
+      background: rgba(233, 196, 106, 0.14);
+      border: none;
+      padding: 5px 13px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+
+    .slide-title {
+      font-size: clamp(1.65rem, 2.8vw, 2.45rem);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      text-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+    }
+
+    .slide-subtitle {
+      font-size: clamp(0.95rem, 1.25vw, 1.1rem);
+      font-weight: 500;
+      color: var(--text-muted);
+      max-width: 880px;
+      margin-top: 6px;
+      letter-spacing: -0.01em;
+    }
+
+    /* GRIDS & CLEAN BORDERLESS GLASS CARDS (CHANCONCHAN AESTHETIC) */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 24px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 22px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      position: relative;
+      background: rgba(16, 30, 52, 0.56);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: none;
+      border-radius: 24px;
+      padding: 26px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.32);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      background: rgba(22, 40, 68, 0.66);
+    }
+
+    .card-terracotta {
+      background: radial-gradient(circle at 90% 10%, rgba(217, 93, 57, 0.16) 0%, rgba(16, 30, 52, 0.58) 70%);
+      border: none;
+    }
+
+    .card-teal {
+      background: radial-gradient(circle at 90% 10%, rgba(42, 157, 143, 0.16) 0%, rgba(16, 30, 52, 0.58) 70%);
+      border: none;
+    }
+
+    .card-amber {
+      background: radial-gradient(circle at 90% 10%, rgba(233, 196, 106, 0.15) 0%, rgba(16, 30, 52, 0.58) 70%);
+      border: none;
+    }
+
+    .card h3 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      border: none;
+      padding: 0;
+      box-shadow: none;
+    }
+
+    /* FLOATING TEXT ON GLASS WITHOUT INNER BOXES OR BORDERS */
+    .card p {
+      font-size: 0.93rem;
+      color: var(--text-muted);
+      background: transparent;
+      border: none;
+      padding: 0;
+      box-shadow: none;
+      line-height: 1.55;
+    }
+
+    .card ul {
+      list-style: none;
+      padding-left: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .card li {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      background: transparent;
+      border: none;
+      padding: 0 0 0 16px;
+      box-shadow: none;
+      position: relative;
+      line-height: 1.5;
+    }
+
+    .card li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 9px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--terracotta-light);
+      box-shadow: 0 0 8px rgba(240, 123, 88, 0.6);
+    }
+
+    .card-teal li::before {
+      background: var(--teal-light);
+      box-shadow: 0 0 8px rgba(74, 210, 194, 0.6);
+    }
+
+    .card-amber li::before {
+      background: var(--amber);
+      box-shadow: 0 0 8px rgba(233, 196, 106, 0.6);
+    }
+
+    .card li strong {
+      color: #FFFFFF;
+      font-weight: 700;
+    }
+
+    /* HERO SLIDE 1 */
+    .hero-banner {
+      position: relative;
+      border-radius: 32px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 86% 18%, rgba(217, 93, 57, 0.32) 0%, transparent 48%),
+        radial-gradient(circle at 85% 90%, rgba(42, 157, 143, 0.30) 0%, transparent 52%),
+        linear-gradient(125deg, rgba(11, 21, 40, 0.88) 0%, rgba(19, 34, 56, 0.78) 55%, rgba(26, 46, 73, 0.72) 100%),
+        url('assets/santa_cruz_qhubo.jpg') center/cover no-repeat;
+      border: none;
+      padding: 48px 46px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+      margin-bottom: 24px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 0.85fr;
+      gap: 34px;
+      align-items: center;
+    }
+
+    @media (max-width: 960px) {
+      .hero-grid { grid-template-columns: 1fr; }
+    }
+
+    .hero-quote {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-size: 1.18rem;
+      color: var(--amber);
+      background: transparent;
+      border: none;
+      padding: 6px 0;
+      margin: 18px 0;
+      box-shadow: none;
+      text-shadow: 0 2px 16px rgba(0, 0, 0, 0.6);
+    }
+
+    .stat-pill-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .stat-box {
+      background: rgba(15, 28, 48, 0.62);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: none;
+      border-radius: 20px;
+      padding: 20px 16px;
+      text-align: center;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.32);
+      transition: transform 0.28s ease, background 0.28s ease;
+    }
+
+    .stat-box:hover {
+      transform: translateY(-4px);
+      background: rgba(22, 40, 68, 0.72);
+    }
+
+    .stat-num {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--terracotta-light);
+      letter-spacing: -0.03em;
+      display: block;
+      text-shadow: 0 0 30px rgba(240, 123, 88, 0.35);
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+      display: block;
+      background: transparent;
+      padding: 0;
+    }
+
+    /* PALETTE EXPLAINER BAR */
+    .palette-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .swatch-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(255, 255, 255, 0.045);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: none;
+      padding: 14px 16px;
+      border-radius: 18px;
+      box-shadow: none;
+      transition: transform 0.25s ease, background 0.25s ease;
+    }
+
+    .swatch-card:hover {
+      transform: translateY(-3px);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .swatch-circle {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    /* INTERACTIVE LEAFLET MAP */
+    #map-itagui {
+      width: 100%;
+      height: 490px;
+      border-radius: 16px;
+      border: 2px solid var(--border-subtle);
+      box-shadow: var(--shadow-elevated);
+      z-index: 10;
+    }
+
+    .map-btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .map-btn {
+      background: var(--bg-card-alt);
+      color: var(--text-main);
+      border: 1px solid var(--border-subtle);
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .map-btn:hover, .map-btn.active {
+      background: var(--terracotta);
+      color: #fff;
+      border-color: var(--terracotta-light);
+    }
+
+    /* BEFORE / AFTER IMAGE SLIDER */
+    .ba-slider-wrapper {
+      position: relative;
+      width: 100%;
+      height: 360px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 2px solid var(--border-subtle);
+      user-select: none;
+    }
+
+    .ba-img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .ba-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50%;
+      height: 100%;
+      overflow: hidden;
+      border-right: 3px solid var(--amber);
+    }
+
+    .ba-badge {
+      position: absolute;
+      bottom: 14px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      z-index: 5;
+    }
+
+    .ba-badge-before {
+      left: 14px;
+      background: rgba(180, 40, 30, 0.9);
+      color: #fff;
+    }
+
+    .ba-badge-after {
+      right: 14px;
+      background: rgba(42, 157, 143, 0.95);
+      color: #fff;
+    }
+
+    .ba-range {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      width: 100%;
+      z-index: 10;
+      cursor: ew-resize;
+      opacity: 0.85;
+    }
+
+    /* TABLES - BORDERLESS TRANSPARENT GLASS */
+    .styled-table-wrapper {
+      overflow-x: auto;
+      border-radius: 22px;
+      background: rgba(16, 30, 52, 0.56);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: none;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.32);
+    }
+
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      background: transparent;
+    }
+
+    table.data-table th {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--amber);
+      text-align: left;
+      padding: 15px 18px;
+      font-weight: 800;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    table.data-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      vertical-align: top;
+      background: transparent;
+    }
+
+    table.data-table tr:nth-child(even) td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    table.data-table tr:hover td {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    table.data-table td strong {
+      color: #fff;
+    }
+
+    /* TABS FOR WORKED EXAMPLES */
+    .tabs-header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .tab-btn {
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(12px);
+      color: var(--text-muted);
+      border: none;
+      padding: 9px 16px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.84rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      background: rgba(42, 157, 143, 0.28);
+      color: var(--teal-light);
+      box-shadow: 0 0 24px rgba(42, 157, 143, 0.22);
+    }
+
+    .tab-pane {
+      display: none;
+    }
+
+    .tab-pane.active {
+      display: block;
+      animation: fadeInSlide 0.3s ease;
+    }
+
+    /* PHOTO GALLERY CARDS - BORDERLESS GLASS */
+    .photo-card {
+      background: rgba(16, 30, 52, 0.52);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: none;
+      border-radius: 22px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.32);
+      transition: transform 0.3s ease;
+    }
+
+    .photo-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .photo-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      cursor: zoom-in;
+      transition: transform 0.3s ease;
+    }
+
+    .photo-card img:hover {
+      transform: scale(1.03);
+    }
+
+    .photo-caption {
+      padding: 14px 18px;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      background: transparent;
+      border: none;
+      box-shadow: none;
+    }
+
+    .photo-caption strong {
+      color: #fff;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    /* WORKED EXAMPLE CALLOUT - SOFT BORDERLESS GLASS */
+    .worked-box {
+      background: rgba(255, 255, 255, 0.045);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: none;
+      border-radius: 18px;
+      padding: 18px 22px;
+      margin-top: 16px;
+      box-shadow: none;
+      transition: transform 0.25s ease;
+    }
+
+    .worked-box:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.065);
+    }
+
+    .worked-badge {
+      display: inline-block;
+      background: var(--teal);
+      color: #fff;
+      font-size: 0.73rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 99px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    /* VIDEO EMBED CONTAINER */
+    .video-frame {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border-radius: 14px;
+      border: 1px solid var(--border-subtle);
+      background: #000;
+    }
+
+    .video-frame iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* PROGRESS / METRIC BARS */
+    .bar-item {
+      margin-bottom: 12px;
+    }
+    .bar-top {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.83rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .bar-track {
+      width: 100%;
+      height: 10px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 99px;
+    }
+
+    /* LIGHTBOX MODAL FOR IMAGES */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 10, 20, 0.92);
+      z-index: 3000;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      cursor: zoom-out;
+    }
+    .lightbox.open {
+      display: flex;
+    }
+    .lightbox img {
+      max-width: 92vw;
+      max-height: 86vh;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+      border: 2px solid var(--amber);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressFill"></div>
+  </div>
+
+  <!-- NÚMERO DE DIAPOSITIVA EN ESQUINA INFERIOR DERECHA -->
+  <div class="corner-slide-num" id="slideCounter">01 / 12</div>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <img id="lightboxImg" src="" alt="Vista ampliada" />
+  </div>
+
+  <!-- MAIN PRESENTATION DECK -->
+  <main class="deck-container">
+
+    <!-- ==================== SLIDE 1: PORTADA E IDENTIDAD CROMÁTICA ==================== -->
+    <section class="slide active" data-title="Portada e Identidad">
+      <div class="hero-banner">
+        <div class="hero-grid">
+          <div>
+            <div class="kicker">📍 Investigación Territorial en Salud Pública • Comuna 1 de Itagüí, Antioquia</div>
+            <h1 style="font-size: clamp(1.8rem, 3.2vw, 2.85rem); font-weight: 800; color: #fff; line-height: 1.15;">
+              Barrio La Santa Cruz:<br>
+              <span style="color: var(--terracotta-light);">“Aprender a Mirar la Salud Pública”</span>
+            </h1>
+            <blockquote class="hero-quote">
+              “Aprender a mirar hasta llegar a ver y que se nos abran los ojos: los de la sensibilidad y los de la razón... La salud no la elige quien quiere sino quien puede.”
+              <div style="font-size: 0.85rem; font-style: normal; color: var(--text-muted); margin-top: 6px;">— Joan Benach & Carles Muntaner (2005)</div>
+            </blockquote>
+            <p style="color: var(--text-main); font-size: 0.95rem; margin-bottom: 18px;">
+              Análisis integral de las <strong>condiciones de vida, modos de vida y estilos de vida</strong>, las <strong>fronteras de segregación socioespacial</strong> frente a la gran industria y sectores de altos ingresos, y el proceso salud-enfermedad colectivo en un territorio que resistió 40 años de olvido estatal.
+            </p>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+              <button class="btn-control active-mode" onclick="goToSlide(2)">🗺️ Explorar Mapa Interactivo</button>
+              <button class="btn-control" onclick="goToSlide(4)">⏳ Ver Antes y Después (1970–2026)</button>
+              <button class="btn-control" onclick="goToSlide(5)">🚧 Analizar la “Frontera Social”</button>
+            </div>
+          </div>
+
+          <div class="stat-pill-grid">
+            <div class="stat-box">
+              <span class="stat-num">1970</span>
+              <span class="stat-label">Génesis sobre el antiguo botadero municipal por familias recicladoras (Titiribí y Heliconia)</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-num">~40 Años</span>
+              <span class="stat-label">De aislamiento estatal viviendo entre “polvo en verano y pantano en invierno”</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-num">~3.500 - 4.000</span>
+              <span class="stat-label">Habitantes directos y del área de influencia en la Comuna 1 de Itagüí</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-num" style="color: var(--teal-light);">100%</span>
+              <span class="stat-label">Vías pavimentadas y redes hidrosanitarias conectadas a la Autopista Sur (2025-2026)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🎨 Concepto Visual: ¿Por qué escogimos esta paleta de colores para representar a La Santa Cruz?</h3>
+        <div class="palette-bar">
+          <div class="swatch-card">
+            <div class="swatch-circle" style="background: #D95D39;"></div>
+            <div>
+              <strong style="font-size: 0.86rem; color: #fff;">Terracota Ladrillo Vivo (#D95D39)</strong>
+              <p style="font-size: 0.77rem;">Simboliza la mampostería en ladrillo cocido de la autoconstrucción obrera y la memoria de las calles de tierra.</p>
+            </div>
+          </div>
+          <div class="swatch-card">
+            <div class="swatch-circle" style="background: #1B365D; border: 1px solid #4A78B5;"></div>
+            <div>
+              <strong style="font-size: 0.86rem; color: #fff;">Azul Pizarra Industrial (#0B1528)</strong>
+              <p style="font-size: 0.77rem;">Evoca el rigor científico de la Salud Pública, el río Medellín y la frontera industrial del “Filtro de Coltejer”.</p>
+            </div>
+          </div>
+          <div class="swatch-card">
+            <div class="swatch-circle" style="background: #2A9D8F;"></div>
+            <div>
+              <strong style="font-size: 0.86rem; color: #fff;">Verde Esperanza y Reciclaje (#2A9D8F)</strong>
+              <p style="font-size: 0.77rem;">Honra el oficio fundador de los recuperadores ambientales y la transformación urbana lograda en 2025-2026.</p>
+            </div>
+          </div>
+          <div class="swatch-card">
+            <div class="swatch-circle" style="background: #E9C46A;"></div>
+            <div>
+              <strong style="font-size: 0.86rem; color: #fff;">Ámbar Cálido Comunitario (#E9C46A)</strong>
+              <p style="font-size: 0.77rem;">Representa la tienda de barrio, la economía de la calle, los convites vecinales y “defender la alegría”.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 2: MARCO TEÓRICO JOAN BENACH ==================== -->
+    <section class="slide" data-title="Joan Benach: Mirar la Salud">
+      <div class="slide-header">
+        <div>
+          <div class="kicker">👁️ Numeral 1 y 2 • Propósito de la Salida Pedagógica de Observación</div>
+          <h2 class="slide-title">“Aprender a Mirar la Salud Pública” (Joan Benach & Carles Muntaner)</h2>
+          <p class="slide-subtitle">Despojarnos de la mirada medicalizada y biologicista para comprender cómo la desigualdad social se incorpora biológicamente en los cuerpos.</p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-terracotta">
+          <div style="display: flex; gap: 18px; align-items: flex-start; flex-wrap: wrap;">
+            <img src="assets/benach_portada.png" alt="Portada Aprender a Mirar la Salud" onclick="openLightbox(this.src)" style="width: 135px; border-radius: 10px; border: 1px solid var(--border-subtle); cursor: zoom-in; flex-shrink: 0;" />
+            <div style="flex: 1; min-width: 220px;">
+              <h3>Claves Epistemológicas del Texto Guía</h3>
+              <ul>
+                <li><strong>Ver vs. Mirar (Cap. I):</strong> Miles de personas ven La Santa Cruz desde el Metro o la Autopista Sur, pero no la <em>miran</em>. Mirar exige razón crítica y sensibilidad frente a la injusticia.</li>
+                <li><strong>Diferencia ≠ Desigualdad (Cap. II):</strong> La diversidad biológica es natural; las brechas de salud entre barrios ricos y pobres son <strong>inequidades</strong>: <em>innecesarias, evitables e injustas</em> (Whitehead, 1992).</li>
+                <li><strong>Poblaciones Enfermas (Cap. III):</strong> Siguiendo a Geoffrey Rose, los números deben leerse como <em>“cifras con rostro que chillan”</em>. No son casos aislados, sino desplazamientos colectivos del riesgo.</li>
+                <li><strong>No culpar a la víctima (Cap. VIII):</strong> Critica el determinismo genético y el mito del “estilo de vida libre” (Ryan, 1971). La alimentación o el descanso están condicionados por el salario y el territorio.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="worked-box" style="margin-top: 16px;">
+            <span class="worked-badge">Los 5 Rasgos de las Desigualdades en Salud (Benach, Cap. VI)</span>
+            <p style="font-size: 0.86rem; color: var(--text-main);">
+              <strong>1. Enormes</strong> (brechas abismales de mortalidad) • <strong>2. Graduales</strong> (gradiente social en cada escalón) • <strong>3. Crecientes</strong> • <strong>4. Adaptativas</strong> (<em>Ley Inversa de Atención Sanitaria</em> de Tudor Hart: quien más necesita atención, menos y peor la recibe) • <strong>5. Históricas</strong> (no son fijas ni inevitables; <em>“la política es medicina a gran escala”</em>, Virchow).
+            </p>
+          </div>
+        </div>
+
+        <div class="card card-teal">
+          <h3>🎥 Sustentación Audiovisual: Joan Benach sobre Desigualdad y Salud</h3>
+          <p style="margin-bottom: 12px;">Conferencia magistral del profesor Joan Benach (UPF) explicando por qué la desigualdad social y la precariedad laboral son la peor epidemia contemporánea:</p>
+          <div class="video-frame">
+            <iframe src="https://www.youtube.com/embed/yu8GYx_PAfE" title="Joan Benach - Desigualdades sociales en salud" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; font-size: 0.82rem; color: var(--text-muted);">
+            <span>📌 <strong>Incorporación biológica (Embodiment - Nancy Krieger):</strong> El cuerpo expresa la historia de su clase social y su barrio.</span>
+            <a href="https://www.youtube.com/watch?v=yu8GYx_PAfE" target="_blank" style="color: var(--teal-light); font-weight: 700; text-decoration: none;">Abrir en YouTube ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 3: MAPA INTERACTIVO EN VIVO (UBICACIÓN EN MEDELLÍN / VALLE DE ABURRÁ E ITAGÜÍ) ==================== -->
+    <section class="slide" data-title="Ubicación Interactiva">
+      <div class="slide-header">
+        <div>
+          <div class="kicker">🛰️ Georreferenciación Satelital Interactiva • Del Valle de Aburrá (Medellín) al Barrio La Santa Cruz</div>
+          <h2 class="slide-title">¿Dónde está ubicado el Barrio La Santa Cruz en el Contexto de Medellín e Itagüí?</h2>
+          <p class="slide-subtitle">Vista satelital real interactiva: usa los botones para volar desde la escala metropolitana de Medellín hasta las Carreras 40 y 41 de La Santa Cruz.</p>
+        </div>
+      </div>
+
+      <div class="map-btn-group">
+        <button class="map-btn" onclick="flyToScale('metro')">🌍 1. Escala Valle de Aburrá (Medellín – Sur)</button>
+        <button class="map-btn" onclick="flyToScale('itagui')">🏙️ 2. Escala Municipio de Itagüí (Comuna 1)</button>
+        <button class="map-btn" onclick="flyToScale('frontera')">🚧 3. La “Frontera Social” (Coltejer / Mayorca / Envigado)</button>
+        <button class="map-btn active" onclick="flyToScale('barrio')">📍 4. Zoom Barrio La Santa Cruz (Cras. 40 y 41)</button>
+      </div>
+
+      <div class="grid-2" style="grid-template-columns: 1.55fr 0.85fr;">
+        <div>
+          <div id="map-itagui"></div>
+        </div>
+
+        <div class="card card-amber" id="mapInfoPanel">
+          <span class="worked-badge" style="background: var(--terracotta);">Ficha Geográfica Interactiva</span>
+          <h3 id="poiTitle" style="margin-top: 6px;">📍 Barrio La Santa Cruz (Filtro de Coltejer)</h3>
+          <p id="poiDesc" style="margin-bottom: 12px; color: var(--text-main);">
+            Ubicado estratégicamente en el costado suroriental de la <strong>Comuna 1 de Itagüí</strong> (coordenadas aprox. <code>6.1668° N, -75.6065° O</code>), a solo 15 minutos del centro de Medellín por la Autopista Sur o la Línea A del Metro.
+          </p>
+          <ul id="poiBullets">
+            <li><strong>Borde Occidental:</strong> Autopista Sur (Carrera 42), arteria nacional de carga pesada.</li>
+            <li><strong>Borde Oriental:</strong> Canalización del Río Medellín y Línea A del Metro (cerca de Estación Itagüí).</li>
+            <li><strong>Borde Norte y Noroccidental:</strong> Antiguos terrenos del Filtro de Coltejer (hoy megaproyecto Ciudad Coltejer) y Zona Industrial N° 1 y N° 2.</li>
+            <li><strong>Borde Sur y Oriental:</strong> Cercanía inmediata al Centro Comercial Mayorca Mega Plaza y límites con Sabaneta y Envigado.</li>
+          </ul>
+          <div class="worked-box" style="margin-top: 14px; padding: 12px 14px;">
+            <strong style="font-size: 0.83rem; color: var(--amber);">💡 Haz clic en cualquiera de los marcadores del mapa</strong>
+            <p style="font-size: 0.8rem; margin-top: 4px;">Cada pin muestra cómo interactúan las fronteras viales, industriales, hospitalarias y comerciales con la salud pública del barrio.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 4: ANATOMÍA DE LOS BORDES Y LÍMITES DEL TERRITORIO ==================== -->
+    <section class="slide" data-title="Límites y Microterritorio">
+      <div class="slide-header">
+        <div>
+          <div class="kicker">🧭 Lectura Espacial del Polígono • Unidad Territorio / Población</div>
+          <h2 class="slide-title">Anatomía de los Límites Geográficos: Un Enclave Popular “Encajonado”</h2>
+          <p class="slide-subtitle">Cómo la posición geográfica de La Santa Cruz dentro del área metropolitana de Medellín–Itagüí determina tanto sus oportunidades de conectividad como sus exposiciones ambientales.</p>
+        </div>
+      </div>
+
+      <div class="grid-4">
+        <div class="card card-terracotta">
+          <h3>🚛 Límite Occidental: Autopista Sur (Cra. 42)</h3>
+          <p>Corredor logístico nacional que conecta a Medellín con el sur del Valle de Aburrá y el Pacífico. Recién en 2025-2026 las <strong>Carreras 40 y 41</strong> del barrio quedaron pavimentadas y conectadas de forma directa con esta arteria.</p>
+          <div style="margin-top: 10px; font-size: 0.8rem; color: var(--terracotta-light); font-weight: 700;">
+            ⚠️ Impacto en Salud: Exposición 24/7 a material particulado PM2.5 diésel, ruido >75 dB y riesgo de accidentalidad vial.
+          </div>
+        </div>
+
+        <div class="card card-teal">
+          <h3>🚆 Límite Oriental: Línea Férrea Metro y Río Medellín</h3>
+          <p>El barrio colinda directamente con la canalización del río Aburrá/Medellín y los rieles de la Línea A del Metro (tramo Estación Envigado – Estación Itagüí). En 1989 esta frontera motivó la organización comunal para evitar el desalojo total.</p>
+          <div style="margin-top: 10px; font-size: 0.8rem; color: var(--teal-light); font-weight: 700;">
+            🛡️ Impacto en Salud: Vibraciones mecánicas constantes, pero alta accesibilidad al transporte masivo metropolitano.
+          </div>
+        </div>
+
+        <div class="card card-amber">
+          <h3>🏭 Límite Norte/Oeste: Filtro de Coltejer y Zona Industrial</h3>
+          <p>Conocido históricamente como <em>“La Santa Cruz (Filtro de Coltejer)”</em>, el barrio nació adosado a los muros de la gran textilera y las Zonas Industriales 1 y 2 de la Comuna 1, junto a sectores como San José y Villa Lía.</p>
+          <div style="margin-top: 10px; font-size: 0.8rem; color: var(--amber); font-weight: 700;">
+            🏙️ Transformación: Reconversión industrial hacia torres residenciales cerradas (“Ciudad Coltejer”).
+          </div>
+        </div>
+
+        <div class="card card-terracotta">
+          <h3>🛍️ Límite Sur/Este: Nodo Mayorca, Envigado y Sabaneta</h3>
+          <p>A pocos cientos de metros confluyen tres municipios (Itagüí, Envigado y Sabaneta) y el megacentro comercial <strong>Mayorca Mega Plaza</strong>, configurando uno de los contrastes socioespaciales más marcados del sur metropolitano.</p>
+          <div style="margin-top: 10px; font-size: 0.8rem; color: var(--terracotta-light); font-weight: 700;">
+            ⚖️ Impacto en Salud: Pobreza relativa y segregación simbólica frente al hiperconsumo.
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-3" style="margin-top: 20px;">
+        <div class="photo-card">
+          <img src="assets/santa_cruz_qhubo.jpg" alt="Vista general La Santa Cruz Itagüí" onclick="openLightbox(this.src)" />
+          <div class="photo-caption">
+            <strong>Configuración urbana del barrio La Santa Cruz</strong>
+            Viviendas de 1 a 3 pisos en mampostería consolidada junto al corredor vial del sur del Valle de Aburrá.
+          </div>
+        </div>
+        <div class="photo-card">
+          <img src="assets/santa_cruz_2026_2.jpg" alt="Conexión vial Carreras 40 y 41" onclick="openLightbox(this.src)" />
+          <div class="photo-caption">
+            <strong>Conexión directa de las Carreras 40 y 41 (2026)</strong>
+            Nuevos andenes, bordillos y pavimento que articulan el interior del barrio con la Autopista Sur.
+          </div>
+        </div>
+        <div class="photo-card">
+          <img src="assets/santa_cruz_comunidad_2025.jpg" alt="Tejido social en La Santa Cruz" onclick="openLightbox(this.src)" />
+          <div class="photo-caption">
+            <strong>Tejido residencial y vida barrial en la Comuna 1</strong>
+            Apropiación comunitaria del espacio público tras cuatro décadas de espera por inversión estatal.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 5: HISTORIA, ANTES Y DESPUÉS E HITO AUDIOVISUAL ==================== -->
+    <section class="slide" data-title="Historia: Antes y Después">
+      <div class="slide-header">
+        <div>
+          <div class="kicker">⏳ Historicidad de los Determinantes Sociales (1970 – 2026)</div>
+          <h2 class="slide-title">De Antiguo Botadero Municipal a Símbolo de Resistencia y Transformación Urbana</h2>
+          <p class="slide-subtitle">“Porque el pasado está vivo” (Galeano citado por Benach): 55 años de lucha comunitaria desde el reciclaje hasta la pavimentación total.</p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <div class="card" style="margin-bottom: 18px;">
+            <h3>🔄 Comparador Interactivo: Desliza para ver el Antes (Barro) vs. Después (2026)</h3>
+            <p style="margin-bottom: 10px; font-size: 0.83rem;">Mueve el control deslizante de izquierda a derecha para comparar las décadas de calles de tierra frente a la pavimentación integral de 2025–2026:</p>
+            <div class="ba-slider-wrapper" id="baSlider">
+              <img src="assets/santa_cruz_alcaldia_2026.jpg" class="ba-img" alt="Después: Pavimentación 2026" />
+              <div class="ba-overlay" id="baOverlay">
+                <img src="assets/santa_cruz_antes_2019.jpg" class="ba-img" id="baBeforeImg" alt="Antes: Calles sin pavimentar" style="width: 100%;" />
+              </div>
+              <span class="ba-badge ba-badge-before">ANTES (40 años: Tierra y Pantano)</span>
+              <span class="ba-badge ba-badge-after">DESPUÉS (2025-2026: 100% Pavimentado)</span>
+              <input type="range" min="5" max="95" value="50" class="ba-range" id="baInput" oninput="updateBeforeAfter(this.value)" aria-label="Comparador antes y después" />
+            </div>
+          </div>
+
+          <div class="card card-teal">
+            <h3>🎬 Video Documental Real: Historia y Transformación de La Santa Cruz</h3>
+            <div class="video-frame" style="margin-top: 8px;">
+              <iframe src="https://www.youtube.com/embed/HoEH6UVuVmo" title="Barrio La Santa Cruz Itagüí" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-terracotta">
+          <h3>📜 Línea de Tiempo Histórica y Epidemiológica</h3>
+          <div style="display: flex; flex-direction: column; gap: 16px; margin-top: 12px;">
+            <div style="background: rgba(255, 255, 255, 0.04); padding: 12px 16px; border-radius: 16px;">
+              <strong style="color: var(--amber);">1. Década de 1970 — Llegada de Fundadores y el Botadero Municipal</strong>
+              <p style="font-size: 0.86rem; margin-top: 4px;">Familias campesinas procedentes de <strong>Titiribí y Heliconia</strong> llegan buscando sustento como recicladores en el basurero municipal de la zona (contiguo al Filtro de Coltejer). Exposición extrema a lixiviados, vectores y gases.</p>
+            </div>
+            <div style="background: rgba(255, 255, 255, 0.04); padding: 12px 16px; border-radius: 16px;">
+              <strong style="color: var(--amber);">2. Finales de los 70s y 80s — De Basurero a Barrio de Invasión</strong>
+              <p style="font-size: 0.86rem; margin-top: 4px;">Tras el cierre del botadero, el suelo de relleno antrópico se consolida como asentamiento informal mediante autoconstrucción progresiva.</p>
+            </div>
+            <div style="background: rgba(255, 255, 255, 0.04); padding: 12px 16px; border-radius: 16px;">
+              <strong style="color: var(--teal-light);">3. Año 1989 — Hito de Organización Comunal y Resistencia</strong>
+              <p style="font-size: 0.86rem; margin-top: 4px;">Con cerca de <strong>200 familias instaladas</strong>, la comunidad crea la Junta de Acción Comunal (JAC) con personería jurídica para defenderse del desalojo ante la construcción del Metro. <strong>67 familias</strong> fueron reubicadas en El Limonar (San Antonio de Prado), pero el resto del barrio resistió y permaneció.</p>
+            </div>
+            <div style="background: rgba(255, 255, 255, 0.04); padding: 12px 16px; border-radius: 16px;">
+              <strong style="color: #FF758F;">4. 1990 a 2024 (35-40 Años) — Aislamiento Estatal e Injusticia Sanitaria</strong>
+              <p style="font-size: 0.86rem; margin-top: 4px;">Por falta de legalización predial plena, el barrio padeció ausencia de inversión pública: calles de tierra, <em>“polvo en verano y pantano en invierno”</em>, acueducto y energía obtenidos de forma precaria, disparando las infecciones respiratorias (IRA) y diarreicas (EDA).</p>
+            </div>
+            <div style="background: rgba(255, 255, 255, 0.04); padding: 12px 16px; border-radius: 16px;">
+              <strong style="color: #52B788;">5. 2025 – Septiembre 2026 — Transformación Integral y Conectividad</strong>
+              <p style="font-size: 0.86rem; margin-top: 4px;">Intervención histórica de la Alcaldía de Itagüí: <strong>Fase I (2025, $2.700 millones)</strong> con 360 m lineales, acueducto, alcantarillado y andenes en Cra. 40; y <strong>Fase II (2026, $810 millones)</strong> con 500 m restantes y callejones, conectando el 100% de las Carreras 40 y 41 con la Autopista Sur para beneficio de hasta 4.000 habitantes.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 6: LA FRONTERA SOCIAL EN SALUD PÚBLICA ==================== -->
+    <section class="slide" data-title="La Frontera Social">
+      <div class="slide-header">
+        <div>
+          <div class="kicker">⚖️ Categoría Crítica de Análisis • Segregación, Empresas y Sectores de Mayores Ingresos</div>
+          <h2 class="slide-title">La “Frontera Social” en Salud Pública: ¿Cómo se nombra y cómo opera en La Santa Cruz?</h2>
+          <p class="slide-subtitle">Por qué habitar como enclave popular rodeado de megaproyectos empresariales, centros comerciales de élite y municipios de estratos altos genera un impacto diferencial en la salud.</p>
+        </div>
+      </div>
+
+      <div class="grid-4" style="margin-bottom: 20px;">
+        <div class="card card-terracotta">
+          <h3>1. “Sociedad Archipiélago” y Segregación</h3>
+          <p><strong>Benach & Muntaner (Cap. IV, p. 43):</strong> La ciudad contemporánea fractura el territorio en <em>“islas de privilegio”</em> corporativo e inmobiliario junto a bolsones de exclusión separados apenas por un muro o una autopista.</p>
+        </div>
+        <div class="card card-amber">
+          <h3>2. Pobreza Relativa y Comparación Social</h3>
+          <p><strong>Townsend (1979) / Wilkinson / Sen (Benach, p. 44, 54, 113):</strong> <em>“Ser pobre en una zona rica es más dañino para la salud que ser pobre en una zona pobre”</em> por el estrés neuroendocrino de la exclusión simbólica.</p>
+        </div>
+        <div class="card card-teal">
+          <h3>3. Efecto de Barrio (Neighborhood Effect)</h3>
+          <p><strong>Ana Diez-Roux (Benach, p. 53 y 101):</strong> El entorno barrial condiciona el riesgo cardiovascular, respiratorio y mental más allá de los hábitos individuales de cada residente.</p>
+        </div>
+        <div class="card card-terracotta">
+          <h3>4. Injusticia Ambiental y Externalidades</h3>
+          <p><strong>Ecología Política de la Salud:</strong> Las grandes industrias y flujos logísticos de la Comuna 1 generan alta riqueza privada pero externalizan el humo, el ruido y el calor hacia las viviendas vecinas de La Santa Cruz.</p>
+        </div>
+      </div>
+
+      <div class="styled-table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Dimensión de la Frontera Social</th>
+              <th>Enclave Popular: Barrio La Santa Cruz (Estratos 1 y 2)</th>
+              <th>Frontera Empresarial e Inmobiliaria Vecina (Zona Industrial, Ciudad Coltejer, Mayorca, Envigado/Sabaneta - Estratos 3 a 6)</th>
+              <th>Traducción en el Proceso Salud-Enfermedad (Mirada de Benach)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>1. Suelo y Hábitat Urbano</strong></td>
+              <td>Asentamiento sobre antiguo botadero (años 70); autoconstrucción de 1 a 3 pisos sin retiros ni zonas verdes internas (< 2 m²/hab).</td>
+              <td>Reconversión de antiguos lotes de Coltejer en <strong>ciudadelas verticales cerradas (“Ciudad Coltejer”)</strong> con piscinas, gimnasios, vigilancia privada y amplios parques en Envigado.</td>
+              <td>Privatización del bienestar urbano y déficit de espacios cardioprotectores y recreativos para la niñez obrera.</td>
+            </tr>
+            <tr>
+              <td><strong>2. Relación Capital – Trabajo</strong></td>
+              <td>Fuerza laboral de recicladores, vendedores ambulantes, microtiendas, operarios tercerizados, vigilantes y aseadoras.</td>
+              <td>Grandes plantas fabriles (Zona Industrial 1 y 2), centros logísticos y vitrinas de hiperconsumo metropolitano (<strong>Mayorca Mega Plaza</strong>).</td>
+              <td>Como señala Virchow (Benach, p. 116): quienes producen los bienes o sostienen los servicios viven con mayor desgaste físico y menor remuneración.</td>
+            </tr>
+            <tr>
+              <td><strong>3. Carga Ambiental</strong></td>
+              <td>Viviendas a ras de vía sin aislamiento acústico ni térmico, recibiendo directamente la pluma de emisiones diésel de la Autopista Sur.</td>
+              <td>Apartamentos en altura con ventanería acústica, climatización privada y mayor cobertura arbórea por habitante en barrios altos de Envigado/Sabaneta.</td>
+              <td>Sobrecarga de EPOC, asma infantil, rinitis crónica e insomnio por ruido (>75 dB) en los residentes de La Santa Cruz.</td>
+            </tr>
+            <tr>
+              <td><strong>4. Atención Sanitaria</strong></td>
+              <td>Predominio del Régimen Subsidiado (SISBÉN IV) y contributivo de 1 SMMLV; necesidad de cruzar la Autopista Sur hacia la ESE Hospital del Sur.</td>
+              <td>Concentración de consultorios médicos privados, torres clínicas en Mayorca, pólizas de medicina prepagada y diagnóstico precoz sin filas.</td>
+              <td><strong>Ley Inversa de Atención Sanitaria (Tudor Hart, Benach p. 66):</strong> A mayor necesidad social y biológica, mayores barreras burocráticas.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 7: EDIFICACIONES, VIVIENDAS Y DETERIORO ESTRUCTURAL ==================== -->
+    <section class="slide" data-title="Edificaciones y Vivienda">
+      <div class="slide-header">
+        <div>
+          <div class="kicker">🧱 Numeral 4 • Caracterización Física y Habitacional (Resolución Módulo 1 de “PARTIENDO DE”)</div>
+          <h2 class="slide-title">Tipología de Edificaciones, Estado de las Viviendas y Deterioro Estructural</h2>
+          <p class="slide-subtitle">Evolución desde el rancho de invasión hacia la autoconstrucción progresiva en mampostería y sus implicaciones directas en la salud familiar.</p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-terracotta">
+          <h3>🏠 Diagnóstico Arquitectónico y Constructivo del Barrio</h3>
+          <ul>
+            <li><strong>Materialidad predominante:</strong> Mampostería en ladrillo cocido y bloque de arcilla (numerosas fachadas sin revoque ni hidrófugo exterior), losas de concreto fundidas artesanalmente y, en terceras plantas o bordes, cubiertas livianas de zinc y fibrocemento.</li>
+            <li><strong>Densidad y altura (1 a 3 pisos):</strong> Crecimiento vertical progresivo (“construir sobre la losa de los padres”) para alojar a nuevas generaciones o subdividir cuartos de alquiler (inquilinatos), sin cálculo sismorresistente (NSR-10).</li>
+            <li><strong>Deterioro estructural y patologías de la vivienda:</strong>
+              <br>• <em>Humedad por capilaridad y filtraciones:</em> Cimentación sobre antiguo relleno y 40 años sin alcantarillado pluvial generaron salitre, hongos y moho negro en muros de primeros pisos.
+              <br>• <em>Fisuras por asentamiento y vibración:</em> Grietas diagonales en muros no confinados agravadas por la vibración del tráfico pesado de la Autopista Sur y del Metro.
+              <br>• <em>Déficit crítico de ventilación e iluminación:</em> Casas adosadas sin patios de luz, creando habitaciones internas oscuras que favorecen la supervivencia de virus y ácaros.
+            </li>
+          </ul>
+
+          <div class="worked-box">
+            <span class="worked-badge">✅ Worked Example Resuelto: Evaluación de Riesgo por Topografía y Materialidad</span>
+            <p style="font-size: 0.84rem; color: var(--text-main);">
+              <strong>Caso:</strong> Viviendas de 3 pisos en mampostería no reforzada sobre pendiente >30° y subsuelo de relleno antiguo.<br>
+              <strong>1. Variable física:</strong> Inclinación pronunciada + suelo heterogéneo + sobrecarga de 3 niveles sin vigas/columnas de confinamiento.<br>
+              <strong>2. Amenaza y Vulnerabilidad:</strong> Lluvias torrenciales (infiltración hídrica) + vibración vial ➔ Alta vulnerabilidad estructural.<br>
+              <strong>3. Impacto en Salud Pública:</strong> Riesgo de colapso/deslizamiento, estrés crónico e insomnio en lluvias, asma por humedad intramuros y dificultad de ingreso de ambulancias en callejones estrechos. <em>La pavimentación y alcantarillado de 2025-2026 mitigó decisivamente la infiltración de aguas lluvias al subsuelo.</em>
+            </p>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div class="grid-2" style="gap: 14px;">
+            <div class="photo-card">
+              <img src="assets/santa_cruz_despues_1.jpg" alt="Edificaciones de 1 a 3 pisos en La Santa Cruz" onclick="openLightbox(this.src)" />
+              <div class="photo-caption">
+                <strong>Autoconstrucción de 1 a 3 niveles</strong>
+                Predominio de ladrillo a la vista, balcones estrechos y uso mixto residencial/productivo en primeros pisos.
+              </div>
+            </div>
+            <div class="photo-card">
+              <img src="assets/santa_cruz_obras_2025.jpg" alt="Obras de alcantarillado y cimentación vial 2025" onclick="openLightbox(this.src)" />
+              <div class="photo-caption">
+                <strong>Saneamiento básico subterráneo (2025)</strong>
+                Instalación de redes formales de acueducto y alcantarillado que pusieron fin a las filtraciones crónicas.
+              </div>
+            </div>
+          </div>
+          <div class="photo-card">
+            <img src="assets/santa_cruz_2026_4.jpg" alt="Callejones e infraestructura renovada en La Santa Cruz 2026" onclick="openLightbox(this.src)" style="height: 215px;" />
+            <div class="photo-caption">
+              <strong>Renovación de callejones y accesibilidad peatonal (Fase II - Septiembre 2026)</strong>
+              Mejoramiento de escaleras, rampas y pasajes internos que antes eran intransitables para adultos mayores y personas con movilidad reducida.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 8: ESPACIO PÚBLICO, INSTITUCIONALIDAD Y VOCACIÓN ==================== -->
+    <section class="slide" data-title="Espacio Público e Instituciones">
+      <div class="slide-header">
+        <div>
+          <div class="kicker">🏛️ Numeral 4 • Equipamiento Colectivo (Resolución Módulo 2 de “PARTIENDO DE”)</div>
+          <h2 class="slide-title">Presencia de la Institucionalidad Pública, Espacio Público y Vocación del Lugar</h2>
+          <p class="slide-subtitle">Del abandono estatal histórico a la conquista comunitaria del pavimento, y el rol articulador de las redes barriales y religiosas.</p>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="card card-teal">
+          <h3>🏛️ Presencia de la Institucionalidad Pública</h3>
+          <ul>
+            <li><strong>Deuda histórica vs. Inversión 2025-2026:</strong> Tras 40 años de ausencia por falta de titulación, la Alcaldía de Itagüí invirtió <strong>$3.510 millones</strong> ($2.700 M en Fase I y $810 M en Fase II) logrando el 100% de vías pavimentadas, andenes y redes de EPM.</li>
+            <li><strong>Salud y Educación extramural:</strong> El barrio no posee hospital ni megacolegio dentro de su polígono interno; los habitantes acuden a la <strong>E.S.E. Hospital del Sur Gabriel Jaramillo Piedrahíta</strong> y colegios oficiales cruzando la Autopista Sur.</li>
+            <li><strong>Acción de la Secretaría de Salud:</strong> Brigadas extramurales de vacunación, control de vectores (dengue), SISBÉN y Plan de Intervenciones Colectivas (PIC).</li>
+          </ul>
+        </div>
+
+        <div class="card card-amber">
+          <h3>⛪ Redes Comunitarias y Estado del Espacio Público</h3>
+          <ul>
+            <li><strong>Junta de Acción Comunal (JAC):</strong> Columna vertebral política del barrio desde 1989; gestora de los convites y de la pavimentación.</li>
+            <li><strong>Hitos espirituales y simbólicos:</strong> La cercanía y articulación con referentes como <strong>La Cruz Itagüí</strong> y la <strong>Parroquia La Ermita de la Santa Cruz</strong> fortalecen el tejido cívico, el apoyo emocional y la solidaridad vecinal.</li>
+            <li><strong>Déficit de zonas verdes vs. Dignificación de la calle:</strong> El barrio tiene menos de 2 m²/hab de zonas verdes internas (frente a los 9–15 m²/hab recomendados por la OMS), por lo que <strong>la calle recién pavimentada y la esquina</strong> funcionan como el principal escenario de recreación infantil y encuentro ciudadano.</li>
+          </ul>
+        </div>
+
+        <div class="card card-terracotta">
+          <h3>🧭 ¿Cuál es la “Vocación” del Lugar?</h3>
+          <ul>
+            <li><strong>1. Vocación Residencial Obrera y Popular Central:</strong> Hábitat de familias trabajadoras estratégicamente situado junto a las fuentes de empleo industrial y el transporte masivo del sur del Valle de Aburrá.</li>
+            <li><strong>2. Vocación Microcomercial y de Economía Vecinal:</strong> Primeros pisos adaptados para tiendas de víveres, talleres, confección satelital y reciclaje.</li>
+            <li><strong>3. Vocación de Memoria y Resistencia Comunitaria:</strong> Territorio que demuestra cómo la organización popular transforma las condiciones materiales de salud pública.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="worked-box" style="margin-top: 18px;">
+        <span class="worked-badge">✅ Worked Example Resuelto: Mapeo de Puntos de Encuentro, Institucionalidad y Cobertura Espacial</span>
+        <div class="grid-3" style="margin-top: 8px; gap: 14px;">
+          <div>
+            <strong style="color: var(--amber); font-size: 0.85rem;">Paso 1. Delimitación del Sector</strong>
+            <p style="font-size: 0.82rem;">Polígono de las Carreras 40 y 41 entre la Autopista Sur y la línea férrea del Metro (Comuna 1, Itagüí).</p>
+          </div>
+          <div>
+            <strong style="color: var(--amber); font-size: 0.85rem;">Paso 2. Georreferenciación de Nodos</strong>
+            <p style="font-size: 0.82rem;">Articulación entre la JAC La Santa Cruz, referentes religiosos (La Ermita de la Santa Cruz / La Cruz Itagüí), tiendas de esquina y el eje peatonal pavimentado.</p>
+          </div>
+          <div>
+            <strong style="color: var(--amber); font-size: 0.85rem;">Paso 3. Vacíos de Cobertura Identificados</strong>
+            <p style="font-size: 0.82rem;">Necesidad de un parque infantil arborizado interno, un Punto de Atención Primaria en Salud (APS) barrial y pasos peatonales seguros sobre la Autopista Sur para adultos mayores.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 9: TRABAJO FORMAL E INFORMAL, PRECARIEDAD Y ECONOMÍA DE LA CALLE ==================== -->
+    <section class="slide" data-title="Trabajo y Economía Callejera">
+      <div class="slide-header">
+        <div>
+          <div class="kicker">🛠️ Numeral 4 • Modos de Vida y Determinación Laboral (Resolución Módulo 3 de “PARTIENDO DE”)</div>
+          <h2 class="slide-title">Trabajo Formal e Informal, Precariedad Laboral y Economía de la Calle</h2>
+          <p class="slide-subtitle">“Cuando no hay trabajo la vida se pudre; cuando el trabajo no tiene alma, la vida se asfixia” (Benach & Muntaner, Cap. VIII, p. 104).</p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-terracotta">
+          <h3>⚙️ Formas de Ocupación y Tramos Precarizados del Trabajo</h3>
+          <ul>
+            <li><strong> Informalidad estructural (~58% a 65% de la PEA barrial):</strong> Ausencia de contrato laboral, sin cotización a pensión ni cobertura de Riesgos Laborales (ARL). Quien enferma y para de trabajar un día, ese día no percibe ingresos.</li>
+            <li><strong>Recicladores de oficio (Herencia fundacional):</strong> Adultos y adultos mayores que recorren Itagüí con carretillas y costales recuperando cartón, chatarra y plástico, expuestos a sobreesfuerzo lumbar, cortes y radiación solar.</li>
+            <li><strong>Economía de la calle y del espacio doméstico:</strong>
+              <br>• <em>Ventas ambulantes y estacionarias (“ventas ventajeras”):</em> Puestos de fritos, empanadas, tintos y comidas rápidas en los accesos hacia la Autopista Sur y el Metro.
+              <br>• <em>Microservicios y talleres en vivienda:</em> Tiendas de barrio, peluquerías, mecánica de motos y <strong>maquila satelital de confección</strong> (mujeres cabeza de hogar que cosen a destajo en sus casas asumiendo doble jornada productiva y reproductiva).
+            </li>
+            <li><strong>Trabajo formal precarizado (Amable & Benach, 2000):</strong> Operarios de bodegas en la Zona Industrial, obreros de construcción, vigilantes y aseadoras con contratos temporales por obra o labor (1 SMMLV), turnos rotativos y alta incertidumbre.</li>
+          </ul>
+        </div>
+
+        <div class="card card-teal">
+          <h3>📋 Resolución Interactiva de los 2 Casos Prácticos (Worked Examples)</h3>
+          <div class="tabs-header" style="margin-top: 10px;">
+            <button class="tab-btn active" onclick="openTab(event, 'tabDonJose')">🏪 Caso 1: Don José (Microtienda)</button>
+            <button class="tab-btn" onclick="openTab(event, 'tabVentasCalle')">🍢 Caso 2: Ventas Ambulantes de Alimentos</button>
+          </div>
+
+          <div id="tabDonJose" class="tab-pane active">
+            <div class="worked-box" style="margin-top: 4px;">
+              <span class="worked-badge">Caso Práctico 1: Clasificación Ocupacional y Seguridad Social</span>
+              <p style="font-size: 0.85rem; color: #fff; margin-bottom: 8px;"><strong>Situación:</strong> Don José (62 años) opera una microtienda de víveres en el primer piso de su casa en La Santa Cruz sin registro mercantil ni empleados.</p>
+              <ul style="font-size: 0.83rem;">
+                <li><strong>1. Estructuración de la unidad productiva:</strong> Micronegocio unipersonal/familiar de economía de subsistencia en vivienda de uso mixto; ingresos variables destinados al sustento diario.</li>
+                <li><strong>2. Vinculación a Seguridad Social:</strong> Al tener ingresos netos inferiores a 1 SMMLV y no poder cotizar como independiente en PILA, permanece en el <strong>Régimen Subsidiado de Salud (SISBÉN IV)</strong>, sin ARL ni pensión.</li>
+                <li><strong>3. Tipología y riesgos en Salud Pública:</strong> <em>Trabajo informal / Economía del vecindario</em>. Jornadas de 14 a 16 horas diarias de lunes a domingo, sedentarismo, estrés financiero por pérdidas en “el fiado” y desprotección total ante vejez o enfermedad incapacitante.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div id="tabVentasCalle" class="tab-pane">
+            <div class="worked-box" style="margin-top: 4px; border-left-color: var(--amber);">
+              <span class="worked-badge" style="background: var(--terracotta);">Caso Práctico 2: Impacto Sanitario en Ventas Ambulantes</span>
+              <p style="font-size: 0.85rem; color: #fff; margin-bottom: 8px;"><strong>Situación:</strong> Venta ambulante de alimentos preparados (fritos/comidas rápidas) en vía pública de alto tránsito del barrio hacia la Autopista Sur.</p>
+              <ul style="font-size: 0.83rem;">
+                <li><strong>1. Condiciones de trabajo y exigencias físicas:</strong> Inhalación continua de humo diésel ($PM_{2.5}$) y vapores de aceite recalentado; radiación solar y estrés térmico junto al fogón; bipedestación prolongada (>8 horas de pie) que causa várices y lumbalgia.</li>
+                <li><strong>2. Inocuidad y salubridad alimentaria:</strong> Limitación de acceso a agua potable corriente en la acera para lavado de manos y utensilios; exposición a polvo/vectores y reutilización de aceites (grasas trans).</li>
+                <li><strong>3. Intervención salubrista (no punitiva):</strong> Capacitación gratuita en manipulación higiénica, dotación de módulos sanitarios en acero inoxidable con tanque de agua limpia y vinculación a programas de economía popular.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 10: EXPOSICIÓN AMBIENTAL Y EXIGENCIAS FÍSICAS ==================== -->
+    <section class="slide" data-title="Ambiente y Exigencias Físicas">
+      <div class="slide-header">
+        <div>
+          <div class="kicker">🌫️ Numeral 4 • Ecología Urbana y Salud Colectiva (Resolución Módulo 4 de “PARTIENDO DE”)</div>
+          <h2 class="slide-title">Riesgos Ambientales y Exigencias Físicas del Entorno Construido</h2>
+          <p class="slide-subtitle">Cómo la contaminación atmosférica, el ruido crónico, el manejo de residuos y la carga biomecánica impactan la morbilidad respiratoria, auditiva y mental de La Santa Cruz.</p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card card-terracotta">
+          <div class="photo-card" style="margin-bottom: 14px;">
+            <img src="assets/aire_valle_aburra.jpg" alt="Contaminación atmosférica en el Valle de Aburrá" onclick="openLightbox(this.src)" style="height: 175px;" />
+            <div class="photo-caption">
+              <strong>Efecto cuenco del Valle de Aburrá + Corredor Autopista Sur</strong>
+              Baja dispersión de contaminantes agravada en la Comuna 1 de Itagüí por el flujo de carga pesada y la actividad fabril.
+            </div>
+          </div>
+          <h3>🫁 1. Contaminación Atmosférica ($PM_{2.5}$, $PM_{10}$ y $NO_x$)</h3>
+          <p>La combinación de emisiones vehiculares pesadas de la Autopista Sur, chimeneas industriales cercanas y cuatro décadas históricas de polvo resuspendido en vías sin pavimentar explica la alta incidencia de <strong>Infecciones Respiratorias Agudas (IRA) en niños</strong> y <strong>EPOC / crisis asmáticas en adultos mayores</strong>.</p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div class="card card-amber">
+            <h3>🔊 2. Contaminación Acústica como Estresor Biológico Crónico</h3>
+            <p>El tráfico pesado 24/7 de la Autopista Sur, el paso del Metro, talleres mecánicos y comercios generan niveles de ruido superiores a <strong>70–78 dB</strong> (por encima del límite saludable de 55 dB de la OMS). Esto altera la arquitectura del sueño, <strong>eleva crónicamente el cortisol sanguíneo</strong> y se asocia con hipertensión arterial, cefaleas, ansiedad e irritabilidad vecinal.</p>
+          </div>
+
+          <div class="card card-teal">
+            <h3>🦟 3. Manejo de Residuos, Vectores y Exigencias Físicas</h3>
+            <ul>
+              <li><strong>Residuos sólidos y vectores:</strong> Puntos de arrojo informal en bordes y acopio doméstico de reciclaje favorecen la presencia de roedores e insectos (mosquitos <em>Aedes aegypti</em> transmisores de <strong>Dengue</strong>) y obstrucción de drenajes en temporada invernal.</li>
+              <li><strong>Exigencias físicas biomecánicas:</strong> Pendientes de borde, escaleras estrechas y empinadas en casas autoconstruidas de 2 y 3 pisos, puentes peatonales largos sobre la Autopista Sur y déficit de parques planos incrementan el desgaste osteomuscular diario.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 11: DEMOGRAFÍA, SALUD-ENFERMEDAD, ESTILOS DE VIDA E IDENTIDAD ==================== -->
+    <section class="slide" data-title="Demografía, Salud y Estilos">
+      <div class="slide-header">
+        <div>
+          <div class="kicker">📊 Numeral 4 • Población, Morbimortalidad y Cultura Barrial (Módulos 5 y 6 de “PARTIENDO DE”)</div>
+          <h2 class="slide-title">Población “Nativa y Usuaria”, Perfil Epidemiológico, Alimentación e Identidad</h2>
+          <p class="slide-subtitle">Indicadores demográficos, determinantes sociales, hábitos de consumo mediados por “el fiado” e identidad de resistencia comunitaria.</p>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <!-- COLUMNA 1: DEMOGRAFÍA + WORKED EXAMPLE 1 -->
+        <div class="card card-teal">
+          <h3>👥 Población Nativa vs. Usuaria</h3>
+          <ul>
+            <li><strong>Población Nativa (~2.500 - 4.000 hab.):</strong> Tres generaciones: (1) Fundadores años 70 de Titiribí y Heliconia (hoy adultos mayores con desgaste crónico); (2) Generación intermedia obrera/informal; y (3) Niñez y juventud actual. Alta jefatura femenina (~42%).</li>
+            <li><strong>Población Usuaria / Flotante:</strong> Inquilinos recientes atraídos por arriendos económicos cerca del Metro/Zona Industrial (migrantes internos y venezolanos) y trabajadores de bodegas vecinas.</li>
+          </ul>
+          <div class="worked-box" style="margin-top: 12px; padding: 12px;">
+            <span class="worked-badge">✅ Worked Example: Índice de Dependencia</span>
+            <p style="font-size: 0.8rem; color: var(--text-main);">
+              Sobre base estandarizada $N = 2.500$: Menores de 15 años (22% = 550); 15-64 años (66% = 1.650); Mayores de 65 años (12% = 300).<br>
+              <strong>Cálculo IDT:</strong> $[(550 + 300) / 1.650] \times 100 =$ <strong>51,5%</strong>.<br>
+              <em>Interpretación:</em> 52 dependientes por cada 100 personas en edad productiva, recayendo el cuidado sobre mujeres en hogares vulnerables.
+            </p>
+          </div>
+        </div>
+
+        <!-- COLUMNA 2: PERFIL EPIDEMIOLÓGICO + WORKED EXAMPLE 2 -->
+        <div class="card card-terracotta">
+          <h3>🏥 Salud y Enfermedad (ASIS Comuna 1)</h3>
+          <div class="bar-item" style="margin-top: 8px;">
+            <div class="bar-top"><span>Régimen Subsidiado / SISBÉN IV (A, B, C)</span><span style="color: var(--amber);">~52%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width: 52%; background: var(--amber);"></div></div>
+          </div>
+          <div class="bar-item">
+            <div class="bar-top"><span>Régimen Contributivo (Mayoría 1 SMMLV)</span><span style="color: var(--teal-light);">~43%</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width: 43%; background: var(--teal-light);"></div></div>
+          </div>
+          <ul>
+            <li><strong>Morbilidad Crónica (ENT):</strong> Hipertensión arterial, Diabetes Mellitus tipo 2, dislipidemias, obesidad y EPOC.</li>
+            <li><strong>Morbilidad Infecciosa/Ambiental:</strong> IRA, asma bronquial, rinitis, EDA y brotes de Dengue.</li>
+            <li><strong>Salud Laboral y Mental:</strong> Lumbalgias, túnel carpiano, várices, ansiedad, depresión y estrés socioeconómico.</li>
+            <li><strong>Mortalidad:</strong> 1° Enfermedades circulatorias (infarto/ECV); 2° Tumores malignos; 3° Respiratorias crónicas; 4° Causas externas/viales.</li>
+          </ul>
+        </div>
+
+        <!-- COLUMNA 3: ESTILOS DE VIDA, ALIMENTACIÓN E IDENTIDAD -->
+        <div class="card card-amber">
+          <h3>🍲 Alimentación, “El Fiado” e Identidad</h3>
+          <ul>
+            <li><strong>Entorno alimentario y hábitos de consumo:</strong> Predominio de dietas hipercalóricas de bajo costo (“saciedad económica”: arroz, papa, plátano, arepa, fritos, embutidos y gaseosas) frente al alto costo de frutas, verduras y proteína magra.</li>
+            <li><strong>La Tienda de Barrio y “El Fiado”:</strong> Nodo vital de abastecimiento al menudeo y crédito solidario a palabra que protege a las familias en semanas sin ingresos.</li>
+            <li><strong>Identidad del sector:</strong> Arraigo, orgullo obrero y resistencia comunitaria (defensa de 1989 y conquista del pavimento 2025-2026). La calle y la esquina como sala de encuentro vecinal.</li>
+          </ul>
+          <div class="worked-box" style="margin-top: 10px; padding: 12px; border-left-color: var(--amber);">
+            <span class="worked-badge" style="background: var(--terracotta);">✅ Worked Example: Entorno Alimentario</span>
+            <p style="font-size: 0.8rem; color: var(--text-main);">
+              Una canasta saludable absorbería >65% de un ingreso de 1 SMMLV. <strong>Propuesta:</strong> Mercados populares directos y comedores comunitarios.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SLIDE 12: ANÁLISIS RELACIONAL MULTIESCALAR Y FINALIDAD DE LA SALUD PÚBLICA ==================== -->
+    <section class="slide" data-title="Síntesis y Salud Pública">
+      <div class="slide-header">
+        <div>
+          <div class="kicker">🌎 Numeral 5 • Síntesis Analítica Multiescalar y Epistemológica</div>
+          <h2 class="slide-title">Relación Barrio–Ciudad–Región–País y el Objeto, Trabajo y Finalidad de la Salud Pública</h2>
+          <p class="slide-subtitle">Articulando condiciones, modos y estilos de vida con la transformación social hacia el buen vivir colectivo.</p>
+        </div>
+      </div>
+
+      <div class="grid-3" style="margin-bottom: 18px;">
+        <div class="card card-terracotta">
+          <h3>1️⃣ MODOS DE VIDA (Nivel General / Estructural)</h3>
+          <p><strong>Estructura económica y política (País – Colombia y Región – Antioquia):</strong> Modelo neoliberal con ~56% de informalidad nacional, migración campo-ciudad (Titiribí/Heliconia hacia el Valle de Aburrá), desigualdad (Gini >0,53) y sistema de salud fragmentado (Ley 100). Determina la inserción laboral precarizada del barrio.</p>
+        </div>
+        <div class="card card-teal">
+          <h3>2️⃣ CONDICIONES DE VIDA (Nivel Particular / Grupal)</h3>
+          <p><strong>Entorno material del barrio en la Ciudad (Itagüí – Comuna 1):</strong> Segregación histórica sobre antiguo botadero, viviendas autoconstruidas de 1-3 pisos, encajonamiento entre la Autopista Sur ($PM_{2.5}$ y ruido) y grandes industrias, déficit de zonas verdes y reciente conquista del saneamiento y pavimento (2025-2026).</p>
+        </div>
+        <div class="card card-amber">
+          <h3>3️⃣ ESTILOS DE VIDA (Nivel Singular / Cotidiano)</h3>
+          <p><strong>Prácticas familiares e individuales condicionadas:</strong> Dieta hipercalórica por restricción presupuestaria, compra al menudeo y “fiado” en tiendas, sedentarismo por jornadas extensas, pero fuertes redes de solidaridad vecinal (JAC y Parroquia) que amortiguan el desgaste psíquico.</p>
+        </div>
+      </div>
+
+      <div class="card card-amber">
+        <h3 style="color: var(--amber); font-size: 1.2rem;">🎯 Conclusión Grupal: Objeto de Estudio, Trabajo, Transformación y Finalidad de la Salud Pública</h3>
+        <div class="grid-3" style="margin-top: 12px;">
+          <div style="background: rgba(255, 255, 255, 0.045); backdrop-filter: blur(14px); padding: 18px; border-radius: 18px;">
+            <strong style="color: var(--terracotta-light); display: block; margin-bottom: 6px;">🔬 OBJETO DE ESTUDIO</strong>
+            <p style="font-size: 0.86rem;">No es la enfermedad aislada ni el órgano biológico por separado, sino el <strong>proceso salud-enfermedad-cuidado colectivo</strong> en su determinación histórica, territorial, económica, ambiental y política.</p>
+          </div>
+          <div style="background: rgba(255, 255, 255, 0.045); backdrop-filter: blur(14px); padding: 18px; border-radius: 18px;">
+            <strong style="color: var(--teal-light); display: block; margin-bottom: 6px;">🛠️ TRABAJO Y TRANSFORMACIÓN</strong>
+            <p style="font-size: 0.86rem;">Como afirma Benach (Cap. X, p. 140): <em>“Diagnosticar la realidad y no actuar no es ética ni políticamente aceptable”</em>. Transformar la salud en La Santa Cruz es pavimentar sus calles, mejorar sus viviendas, dignificar al reciclador y llevar Atención Primaria en Salud al territorio.</p>
+          </div>
+          <div style="background: rgba(255, 255, 255, 0.045); backdrop-filter: blur(14px); padding: 18px; border-radius: 18px;">
+            <strong style="color: var(--amber); display: block; margin-bottom: 6px;">🌅 FINALIDAD ÉTICO-POLÍTICA</strong>
+            <p style="font-size: 0.86rem;">Lograr la equidad sanitaria y la justicia social para que toda comunidad disfrute de una vida <strong>“autónoma, solidaria y gozosa”</strong> (Jordi Gol). En palabras finales de Benach: <em>“Defender la salud, defender la alegría”</em>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    // ==================== SLIDE NAVIGATION LOGIC (SLIDE BY SLIDE) ====================
+    let slides = document.querySelectorAll('.slide');
+    let totalSlides = slides.length;
+    let currentSlide = parseInt(sessionStorage.getItem('sp_currentSlide') || '0', 10);
+    sessionStorage.removeItem('sp_isScrollMode');
+
+    function renderDots() {
+      slides = document.querySelectorAll('.slide');
+      totalSlides = slides.length;
+      if (currentSlide >= totalSlides) currentSlide = Math.max(0, totalSlides - 1);
+    }
+
+    function updateDeckUI() {
+      slides = document.querySelectorAll('.slide');
+      totalSlides = slides.length;
+      if (currentSlide >= totalSlides) currentSlide = Math.max(0, totalSlides - 1);
+
+      sessionStorage.setItem('sp_currentSlide', String(currentSlide));
+      document.body.classList.remove('scroll-mode');
+
+      slides.forEach((s, i) => {
+        s.classList.toggle('active', i === currentSlide);
+      });
+
+      const counterEl = document.getElementById('slideCounter');
+      if (counterEl) {
+        const curStr = String(currentSlide + 1).padStart(2, '0');
+        const totStr = String(totalSlides).padStart(2, '0');
+        counterEl.textContent = `${curStr} / ${totStr}`;
+      }
+      const progressEl = document.getElementById('progressFill');
+      if (progressEl) progressEl.style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+
+      if (currentSlide === 2 && mapInstance) {
+        setTimeout(() => mapInstance.invalidateSize(), 150);
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function goToSlide(index) {
+      slides = document.querySelectorAll('.slide');
+      totalSlides = slides.length;
+      currentSlide = (index + totalSlides) % totalSlides;
+      updateDeckUI();
+    }
+
+    function nextSlide() {
+      goToSlide(currentSlide + 1);
+    }
+
+    function prevSlide() {
+      goToSlide(currentSlide - 1);
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+        e.preventDefault();
+        nextSlide();
+      }
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        prevSlide();
+      }
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    // ==================== BEFORE / AFTER SLIDER ====================
+    function updateBeforeAfter(val) {
+      const overlay = document.getElementById('baOverlay');
+      if (overlay) overlay.style.width = val + '%';
+    }
+
+    // ==================== TABS FOR WORKED EXAMPLES ====================
+    function openTab(evt, tabId) {
+      const parent = evt.currentTarget.closest('.card');
+      parent.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      parent.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      evt.currentTarget.classList.add('active');
+    }
+
+    // ==================== LIGHTBOX ====================
+    function openLightbox(src) {
+      document.getElementById('lightboxImg').src = src;
+      document.getElementById('lightbox').classList.add('open');
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
+    }
+
+    // ==================== INTERACTIVE LEAFLET MAP (SATELLITE VIEW) ====================
+    let mapInstance = null;
+    let satelliteLayer = null;
+    let labelsLayer = null;
+
+    const poiData = {
+      santaCruz: {
+        coords: [6.1665, -75.6062],
+        title: "📍 Barrio La Santa Cruz (Carreras 40 y 41 - Comuna 1, Itagüí)",
+        desc: "Núcleo del estudio. Asentado en los años 70 sobre el antiguo botadero municipal por familias recicladoras de Titiribí y Heliconia. En 2025-2026 logró la pavimentación del 100% de sus vías.",
+        bullets: [
+          "<strong>Población:</strong> ~2.500 a 4.000 habitantes en su área de influencia (Estratos 1 y 2).",
+          "<strong>Conectividad 2026:</strong> Carreras 40 y 41 pavimentadas y conectadas directamente con la Autopista Sur.",
+          "<strong>Determinante clave:</strong> Ejemplo de resistencia comunal desde 1989 frente a la amenaza de desalojo."
+        ]
+      },
+      autopistaSur: {
+        coords: [6.1672, -75.6075],
+        title: "🚛 Borde Occidental: Corredor de la Autopista Sur (Cra. 42)",
+        desc: "Frontera vial inmediata que separa el polígono del barrio del resto de Itagüí y conecta a Medellín con el sur del país.",
+        bullets: [
+          "<strong>Exposición ambiental:</strong> Flujo continuo de tractomulas y buses con altas emisiones de PM2.5 y ruido (>75 dB).",
+          "<strong>Economía de la calle:</strong> Eje donde se ubican ventas ambulantes de alimentos y comercios informales.",
+          "<strong>Barrera física:</strong> Exige cruzar puentes o vías rápidas para acudir a hospitales y colegios."
+        ]
+      },
+      metroItagui: {
+        coords: [6.1630, -75.6066],
+        title: "🚆 Borde Oriental: Línea A del Metro (Estación Itagüí) y Río Medellín",
+        desc: "Infraestructura metropolitana que delimita el costado oriental del barrio junto a la canalización del río Medellín.",
+        bullets: [
+          "<strong>Hito histórico (1989):</strong> Su construcción motivó la creación de la Junta de Acción Comunal; 67 familias fueron reubicadas en El Limonar y el resto del barrio resistió.",
+          "<strong>Movilidad:</strong> Brinda conexión rápida hacia el centro y norte de Medellín para los trabajadores del sector."
+        ]
+      },
+      coltejer: {
+        coords: [6.1715, -75.6068],
+        title: "🏭 Frontera Industrial e Inmobiliaria: Filtro de Coltejer / Ciudad Coltejer y Zona Industrial",
+        desc: "El barrio fue conocido históricamente como 'La Santa Cruz (Filtro de Coltejer)' por colindar con los terrenos de la emblemática textilera y las Zonas Industriales 1 y 2.",
+        bullets: [
+          "<strong>Frontera Social:</strong> Los antiguos predios industriales se transforman hoy en el megaproyecto 'Ciudad Coltejer' (torres residenciales de estratos medios-altos).",
+          "<strong>Contraste Salubrista:</strong> Unidades cerradas con amenidades privadas frente a viviendas populares autoconstruidas."
+        ]
+      },
+      mayorca: {
+        coords: [6.1608, -75.6052],
+        title: "🛍️ Frontera de Hiperconsumo y Límites con Sabaneta y Envigado (Mayorca Mega Plaza)",
+        desc: "A pocos metros hacia el sur y el oriente confluyen el megacentro comercial Mayorca y los municipios de Envigado y Sabaneta (estratos 4, 5 y 6).",
+        bullets: [
+          "<strong>Pobreza Relativa (Benach & Muntaner):</strong> El contraste cotidiano entre las vitrinas de lujo/torres médicas privadas y la economía de subsistencia genera estrés psicosocial.",
+          "<strong>Inserción laboral:</strong> Fuente de empleo tercerizado en aseo, vigilancia, logística y servicios."
+        ]
+      },
+      hospitalSur: {
+        coords: [6.1708, -75.6142],
+        title: "🏥 Institucionalidad en Salud: E.S.E. Hospital del Sur Gabriel Jaramillo Piedrahíta",
+        desc: "Principal referente público de atención primaria y urgencias del municipio de Itagüí para la población del Régimen Subsidiado de La Santa Cruz.",
+        bullets: [
+          "<strong>Accesibilidad:</strong> Ubicado al occidente de la Autopista Sur, requiriendo desplazamiento fuera del barrio.",
+          "<strong>Perfil de consulta:</strong> Hipertensión arterial, diabetes tipo 2, EPOC, infecciones respiratorias agudas (IRA) y salud mental."
+        ]
+      },
+      ermita: {
+        coords: [6.1726, -75.6096],
+        title: "⛪ Referente Simbólico y Espiritual: Parroquia La Ermita de la Santa Cruz / La Cruz",
+        desc: "Nodos de congregación religiosa y comunitaria en Itagüí que articulan redes de solidaridad, apoyo mutuo e identidad cultural.",
+        bullets: [
+          "<strong>Factor Protector (Estudio Alameda County citado por Benach):</strong> Las redes de apoyo vecinal y cohesión comunitaria actúan como amortiguador frente a la adversidad."
+        ]
+      },
+      medellinCentro: {
+        coords: [6.2442, -75.5812],
+        title: "🌆 Contexto Metropolitano: Medellín y el Valle de Aburrá",
+        desc: "Núcleo central del Área Metropolitana del Valle de Aburrá. La Santa Cruz se ubica al sur de Medellín, en la conurbación directa con Itagüí.",
+        bullets: [
+          "<strong>Escala Regional:</strong> El estrecho cañón geográfico del Valle de Aburrá atrapa los contaminantes atmosféricos emitidos por el corredor industrial y vehicular."
+        ]
+      }
+    };
+
+    function updatePOIPanel(key) {
+      const item = poiData[key];
+      if (!item) return;
+      const titleEl = document.getElementById('poiTitle');
+      const descEl = document.getElementById('poiDesc');
+      const bulletsEl = document.getElementById('poiBullets');
+      if (titleEl) titleEl.innerHTML = item.title;
+      if (descEl) descEl.innerHTML = item.desc;
+      if (bulletsEl) bulletsEl.innerHTML = item.bullets.map(b => `<li>${b}</li>`).join('');
+    }
+
+    function initMap() {
+      const mapEl = document.getElementById('map-itagui');
+      if (!mapEl || typeof L === 'undefined') return;
+      if (mapInstance) {
+        try { mapInstance.remove(); } catch (_) {}
+        mapInstance = null;
+      }
+
+      mapInstance = L.map('map-itagui').setView([6.1665, -75.6062], 16);
+
+      satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        maxZoom: 19,
+        attribution: 'Tiles © Esri — Source: Esri, Maxar, Earthstar Geographics'
+      }).addTo(mapInstance);
+
+      labelsLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+        maxZoom: 19,
+        opacity: 0.85
+      }).addTo(mapInstance);
+
+      // Polígono aproximado del Barrio La Santa Cruz (entre Autopista Sur y Línea del Metro, Carreras 40 y 41)
+      const barrioPolygon = L.polygon([
+        [6.1684, -75.6071],
+        [6.1684, -75.6054],
+        [6.1645, -75.6058],
+        [6.1645, -75.6074]
+      ], {
+        color: '#D95D39',
+        weight: 3,
+        fillColor: '#D95D39',
+        fillOpacity: 0.32
+      }).addTo(mapInstance);
+
+      barrioPolygon.bindPopup("<b>Polígono Barrio La Santa Cruz (Itagüí)</b><br>Carreras 40 y 41 conectadas a la Autopista Sur.<br>100% pavimentado en 2025-2026.");
+      barrioPolygon.on('click', () => updatePOIPanel('santaCruz'));
+
+      // Polígono de contraste: Frontera Industrial / Ciudad Coltejer
+      const fronteraPolygon = L.polygon([
+        [6.1745, -75.6085],
+        [6.1745, -75.6048],
+        [6.1686, -75.6053],
+        [6.1686, -75.6082]
+      ], {
+        color: '#E9C46A',
+        weight: 2,
+        dashArray: '6, 6',
+        fillColor: '#E9C46A',
+        fillOpacity: 0.18
+      }).addTo(mapInstance);
+      fronteraPolygon.bindPopup("<b>Frontera Industrial e Inmobiliaria</b><br>Antiguo Filtro de Coltejer / Zona Industrial Comuna 1 y megaproyectos residenciales.");
+      fronteraPolygon.on('click', () => updatePOIPanel('coltejer'));
+
+      // Helper for custom colored circle markers
+      function createMarker(key, color) {
+        const d = poiData[key];
+        const m = L.circleMarker(d.coords, {
+          radius: 10,
+          fillColor: color,
+          color: '#ffffff',
+          weight: 2.5,
+          opacity: 1,
+          fillOpacity: 0.95
+        }).addTo(mapInstance);
+        m.bindPopup(`<b>${d.title}</b><br>${d.desc}`);
+        m.on('click', () => updatePOIPanel(key));
+        return m;
+      }
+
+      createMarker('santaCruz', '#D95D39');
+      createMarker('autopistaSur', '#E63946');
+      createMarker('metroItagui', '#2A9D8F');
+      createMarker('coltejer', '#E9C46A');
+      createMarker('mayorca', '#9B5DE5');
+      createMarker('hospitalSur', '#00BBF9');
+      createMarker('ermita', '#F15BB5');
+      createMarker('medellinCentro', '#4AD2C2');
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderDots();
+      updateDeckUI(true);
+      initMap();
+    });
+
+    // Hot DOM patcher for instant zero-flicker HTML updates from Bun server
+    window.__applyHotHTML = function(newHtmlText) {
+      const link = document.getElementById('app-styles') || document.querySelector('link[href*="/src/styles.css"]');
+      if (link) {
+        const url = new URL(link.href, window.location.origin);
+        url.searchParams.set('t', Date.now());
+        link.href = url.pathname + url.search;
+      }
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(newHtmlText, 'text/html');
+      const newDeck = doc.querySelector('main.deck-container');
+      const curDeck = document.querySelector('main.deck-container');
+      if (!newDeck || !curDeck) {
+        window.location.reload();
+        return;
+      }
+
+      const newSlides = newDeck.querySelectorAll('.slide');
+      const curSlides = curDeck.querySelectorAll('.slide');
+
+      if (newSlides.length !== curSlides.length) {
+        curDeck.innerHTML = newDeck.innerHTML;
+        renderDots();
+        updateDeckUI(true);
+        initMap();
+        return;
+      }
+
+      let mapSlideChanged = false;
+      newSlides.forEach((nSlide, idx) => {
+        const cSlide = curSlides[idx];
+        const wasActive = cSlide.classList.contains('active');
+        nSlide.classList.remove('active');
+        cSlide.classList.remove('active');
+        if (cSlide.innerHTML !== nSlide.innerHTML || cSlide.getAttribute('data-title') !== nSlide.getAttribute('data-title')) {
+          cSlide.innerHTML = nSlide.innerHTML;
+          cSlide.setAttribute('data-title', nSlide.getAttribute('data-title') || '');
+          if (idx === 2 || nSlide.querySelector('#map-itagui')) {
+            mapSlideChanged = true;
+          }
+        }
+        if (wasActive) cSlide.classList.add('active');
+      });
+
+      renderDots();
+      updateDeckUI(true);
+      if (mapSlideChanged) {
+        initMap();
+      }
+    };
+
+    function flyToScale(scale) {
+      document.querySelectorAll('.map-btn').forEach(b => {
+        b.classList.remove('active');
+      });
+      if (typeof event !== 'undefined' && event.currentTarget) {
+        event.currentTarget.classList.add('active');
+      }
+
+      if (scale === 'metro') {
+        mapInstance.flyTo([6.205, -75.592], 12, { duration: 1.4 });
+        updatePOIPanel('medellinCentro');
+      } else if (scale === 'itagui') {
+        mapInstance.flyTo([6.171, -75.610], 14, { duration: 1.4 });
+        updatePOIPanel('hospitalSur');
+      } else if (scale === 'frontera') {
+        mapInstance.flyTo([6.1665, -75.6062], 15, { duration: 1.4 });
+        updatePOIPanel('coltejer');
+      } else {
+        mapInstance.flyTo([6.1665, -75.6062], 17, { duration: 1.4 });
+        updatePOIPanel('santaCruz');
+      }
+    }
+  </script>
+</body>
+</html>
