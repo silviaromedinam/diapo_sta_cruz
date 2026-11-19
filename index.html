@@ -36,11 +36,14 @@
 
     html, body {
       width: 100%;
-      height: 100vh;
-      height: 100dvh;
-      overflow: hidden;
-      overscroll-behavior: none;
-      touch-action: pan-y;
+      height: 100%;
+      min-height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
     }
 
     body {
@@ -53,10 +56,8 @@
         linear-gradient(160deg, #070F1E 0%, #0D1B32 50%, #091324 100%);
       background-attachment: fixed;
       color: var(--text-main);
-      line-height: 1.45;
+      line-height: 1.5;
       position: relative;
-      user-select: none;
-      -webkit-user-select: none;
     }
 
     /* Ambient floating orbs behind glass cards */
@@ -89,40 +90,14 @@
       100% { transform: translate(45px, -35px) scale(1.12); }
     }
 
-    .btn-control {
-      background: rgba(16, 30, 52, 0.62);
-      backdrop-filter: blur(14px);
-      color: var(--text-main);
-      border: none;
-      padding: 10px 18px;
-      border-radius: 999px;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .btn-control:hover {
-      background: rgba(24, 44, 74, 0.8);
-      transform: translateY(-2px);
-    }
-
-    .btn-control.active-mode {
-      background: var(--terracotta);
-      color: #fff;
-    }
-
-    /* SUBTLE TOP PROGRESS LINE (3px at top: 0) */
+    /* SUBTLE TOP PROGRESS LINE (4px at top: 0) */
     .progress-bar-container {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 4px;
-      background: rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.08);
       z-index: 2000;
       pointer-events: none;
     }
@@ -130,49 +105,99 @@
     .progress-bar-fill {
       height: 100%;
       background: linear-gradient(90deg, var(--terracotta), var(--amber), var(--teal-light));
-      box-shadow: 0 0 10px rgba(217, 93, 57, 0.55);
+      box-shadow: 0 0 12px rgba(217, 93, 57, 0.65);
       width: 5.55%;
       transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* SINGLE MINIMAL SLIDE NUMBER IN BOTTOM RIGHT CORNER */
-    .corner-slide-num {
+    /* FLOATING BOTTOM CONTROLS DOCK */
+    .floating-nav-dock {
       position: fixed;
       bottom: 18px;
-      right: 26px;
-      font-family: 'Plus Jakarta Sans', monospace;
-      font-size: 1.05rem;
-      font-weight: 800;
-      letter-spacing: 0.14em;
-      color: rgba(244, 247, 251, 0.58);
-      z-index: 1900;
-      pointer-events: none;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(11, 21, 40, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      padding: 6px 14px;
+      border-radius: 999px;
+      z-index: 2500;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .nav-dock-btn {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 7px 15px;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
       user-select: none;
     }
 
-    /* PRESENTATION CONTAINER - STRICT 100VH HORIZONTAL SCREEN */
+    .nav-dock-btn:hover {
+      background: var(--terracotta);
+      border-color: var(--terracotta-light);
+      transform: translateY(-1px);
+    }
+
+    .nav-dock-counter {
+      font-family: 'Plus Jakarta Sans', monospace;
+      font-size: 0.92rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: var(--amber);
+      padding: 0 6px;
+      user-select: none;
+    }
+
+    /* PRESENTATION CONTAINER - PERMITE DESPLAZARSE ABAJO EN CADA DIAPOSITIVA */
     .deck-container {
       width: 100%;
-      height: 100vh;
-      height: 100dvh;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      min-height: 100vh;
+      min-height: 100dvh;
       position: relative;
+      box-sizing: border-box;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 9px;
+      height: 9px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(11, 21, 40, 0.6);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(233, 196, 106, 0.4);
+      border-radius: 999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(233, 196, 106, 0.75);
     }
 
     .slide {
       display: none;
       width: 100%;
       max-width: 1680px;
-      max-height: 100vh;
-      padding: 28px 4vw 34px;
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding: 38px 4vw 110px; /* Espacio inferior amplio para ver todo el contenido y no tapar con el dock */
       margin: 0 auto;
       flex-direction: column;
-      justify-content: center;
-      transform-origin: center center;
-      animation: fadeInSlide 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      justify-content: flex-start;
+      box-sizing: border-box;
+      animation: fadeInSlide 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
     .slide.active {
@@ -180,8 +205,8 @@
     }
 
     @keyframes fadeInSlide {
-      from { opacity: 0; transform: translateY(10px) scale(0.99); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     /* SLIDE HEADER - LARGE READABLE SCALE (150% FEEL) */
@@ -775,46 +800,31 @@
       border: 2px solid var(--amber);
     }
 
-    /* MOBILE: ROTATE CONTENT HORIZONTALLY BY DEFAULT WHEN HELD IN PORTRAIT */
-    @media screen and (max-width: 920px) and (orientation: portrait) {
-      html {
-        width: 100dvw;
-        height: 100dvh;
-        overflow: hidden;
-      }
-      body {
-        position: fixed;
-        top: 0;
-        left: 100dvw;
-        width: 100dvh;
-        height: 100dvw;
-        transform: rotate(90deg);
-        transform-origin: top left;
-        overflow: hidden;
-        touch-action: none;
-      }
-      .deck-container {
-        width: 100dvh;
-        height: 100dvw;
+    /* RESPONSIVE DESIGN - PERMITE LEER Y BAJAR CÓMODAMENTE EN CUALQUIER PANTALLA */
+    @media screen and (max-width: 960px) {
+      .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+        gap: 16px;
       }
       .slide {
-        max-height: 100dvw;
-        padding: 14px 24px;
+        padding: 24px 18px 90px;
       }
-      .corner-slide-num {
-        bottom: 10px;
-        right: 18px;
-        font-size: 0.85rem;
+      .hero-grid {
+        grid-template-columns: 1fr !important;
       }
-    }
-
-    @media screen and (max-width: 920px) and (orientation: landscape) {
-      body {
-        overflow: hidden;
-        touch-action: none;
+      .slide-title {
+        font-size: 1.85rem;
       }
-      .slide {
-        padding: 14px 24px;
+      .slide-subtitle {
+        font-size: 1.05rem;
+      }
+      .floating-nav-dock {
+        bottom: 12px;
+        padding: 5px 12px;
+      }
+      .nav-dock-btn {
+        padding: 6px 12px;
+        font-size: 0.82rem;
       }
     }
   </style>
@@ -825,8 +835,12 @@
     <div class="progress-bar-fill" id="progressFill"></div>
   </div>
 
-  <!-- NÚMERO DE DIAPOSITIVA EN ESQUINA INFERIOR DERECHA -->
-  <div class="corner-slide-num" id="slideCounter">01 / 18</div>
+  <!-- BARRA FLOTANTE DE CONTROL Y NAVEGACIÓN -->
+  <nav class="floating-nav-dock" aria-label="Navegación de diapositivas">
+    <button class="nav-dock-btn" onclick="prevSlide()" title="Diapositiva anterior (Flecha Izquierda)">◀ Anterior</button>
+    <span class="nav-dock-counter" id="dockCounter">01 / 18</span>
+    <button class="nav-dock-btn" onclick="nextSlide()" title="Siguiente diapositiva (Flecha Derecha)">Siguiente ▶</button>
+  </nav>
 
   <!-- LIGHTBOX -->
   <div class="lightbox" id="lightbox" onclick="closeLightbox()">
@@ -1585,7 +1599,7 @@
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-    // ==================== SLIDE NAVIGATION LOGIC (SLIDE BY SLIDE) ====================
+    // ==================== SLIDE NAVIGATION LOGIC (SLIDE BY SLIDE WITH NATURAL VERTICAL SCROLL) ====================
     let slides = document.querySelectorAll('.slide');
     let totalSlides = slides.length;
     let currentSlide = parseInt(sessionStorage.getItem('sp_currentSlide') || '0', 10);
@@ -1597,56 +1611,41 @@
       if (currentSlide >= totalSlides) currentSlide = Math.max(0, totalSlides - 1);
     }
 
-    function fitActiveSlide() {
-      const activeSlide = document.querySelector('.slide.active');
-      if (!activeSlide) return;
-      activeSlide.style.transform = '';
-
-      const deck = document.querySelector('.deck-container');
-      const availH = deck ? deck.clientHeight : window.innerHeight;
-      const availW = deck ? deck.clientWidth : window.innerWidth;
-
-      const contentH = activeSlide.scrollHeight;
-      const contentW = activeSlide.scrollWidth;
-
-      const safetyH = 24;
-      const safetyW = 20;
-
-      const scaleH = (availH - safetyH) / contentH;
-      const scaleW = (availW - safetyW) / contentW;
-      const scale = Math.min(1, scaleH, scaleW);
-
-      if (scale < 0.98) {
-        activeSlide.style.transform = `scale(${scale.toFixed(3)})`;
-      }
-    }
-
     function updateDeckUI() {
       slides = document.querySelectorAll('.slide');
       totalSlides = slides.length;
       if (currentSlide >= totalSlides) currentSlide = Math.max(0, totalSlides - 1);
 
       sessionStorage.setItem('sp_currentSlide', String(currentSlide));
-      document.body.classList.remove('scroll-mode');
 
       slides.forEach((s, i) => {
         s.classList.toggle('active', i === currentSlide);
       });
 
+      const curStr = String(currentSlide + 1).padStart(2, '0');
+      const totStr = String(totalSlides).padStart(2, '0');
+
       const counterEl = document.getElementById('slideCounter');
       if (counterEl) {
-        const curStr = String(currentSlide + 1).padStart(2, '0');
-        const totStr = String(totalSlides).padStart(2, '0');
         counterEl.textContent = `${curStr} / ${totStr}`;
       }
+
+      const dockCounterEl = document.getElementById('dockCounter');
+      if (dockCounterEl) {
+        dockCounterEl.textContent = `${curStr} / ${totStr}`;
+      }
+
       const progressEl = document.getElementById('progressFill');
       if (progressEl) progressEl.style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
 
       if (currentSlide === 2 && mapInstance) {
         setTimeout(() => mapInstance.invalidateSize(), 150);
       }
-      fitActiveSlide();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Reinicia el scroll al inicio de la nueva diapositiva para empezar desde arriba
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      const deck = document.querySelector('.deck-container');
+      if (deck) deck.scrollTop = 0;
     }
 
     function goToSlide(index) {
@@ -1664,22 +1663,22 @@
       goToSlide(currentSlide - 1);
     }
 
+    // Navegación con teclado: Solo flechas izquierda/derecha cambian de diapositiva; arriba/abajo y espacio permiten bajar y leer
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+      if (e.key === 'ArrowRight') {
         e.preventDefault();
         nextSlide();
-      }
-      if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      } else if (e.key === 'ArrowLeft') {
         e.preventDefault();
         prevSlide();
+      } else if (e.key === 'Escape') {
+        closeLightbox();
       }
-      if (e.key === 'Escape') closeLightbox();
     });
 
-    // ==================== TOUCH SWIPE & DRAG NAVIGATION ====================
+    // ==================== GESTOS TÁCTILES Y HORIZONTALES ====================
     let touchStartX = 0;
     let touchStartY = 0;
-    let touchStartTime = 0;
     let isTouching = false;
 
     function isInteractiveTarget(target) {
@@ -1691,7 +1690,6 @@
       if (e.touches.length === 1) {
         touchStartX = e.touches[0].clientX;
         touchStartY = e.touches[0].clientY;
-        touchStartTime = Date.now();
         isTouching = true;
       }
     }, { passive: true });
@@ -1705,54 +1703,29 @@
         const dx = touchEndX - touchStartX;
         const dy = touchEndY - touchStartY;
 
-        const isRotatedPortrait = window.matchMedia('(max-width: 920px) and (orientation: portrait)').matches;
-
-        if (isRotatedPortrait) {
-          // In 90deg rotated portrait mode, dragging visually left-to-right corresponds to deltaY on physical screen
-          if (Math.abs(dy) > 35) {
-            if (dy < 0) nextSlide();
-            else prevSlide();
-            return;
-          }
-          if (Math.abs(dx) > 35) {
-            if (dx < 0) nextSlide();
-            else prevSlide();
-            return;
-          }
-        } else {
-          // Standard landscape or desktop touch
-          if (Math.abs(dx) > 35 && Math.abs(dx) > Math.abs(dy) * 0.7) {
-            if (dx < 0) nextSlide();
-            else prevSlide();
-            return;
-          }
-          if (Math.abs(dy) > 40) {
-            if (dy < 0) nextSlide();
-            else prevSlide();
-            return;
-          }
+        // Solo cambiar diapositiva con swipe netamente horizontal (el arrastre vertical baja y sube el contenido)
+        if (Math.abs(dx) > 65 && Math.abs(dx) > Math.abs(dy) * 1.8) {
+          if (dx < 0) nextSlide();
+          else prevSlide();
         }
       }
     }, { passive: true });
 
-    // Wheel/trackpad swipe support with debounce
+    // Trackpad horizontal swipe con debounce (el scroll vertical con la rueda del ratón es natural y baja el contenido)
     let wheelDebounce = false;
     window.addEventListener('wheel', (e) => {
       if (isInteractiveTarget(e.target)) return;
       if (wheelDebounce) return;
-      if (Math.abs(e.deltaX) > 30 || Math.abs(e.deltaY) > 30) {
+      if (Math.abs(e.deltaX) > 55 && Math.abs(e.deltaX) > Math.abs(e.deltaY) * 2) {
         wheelDebounce = true;
-        if (e.deltaX > 30 || e.deltaY > 30) {
+        if (e.deltaX > 0) {
           nextSlide();
-        } else if (e.deltaX < -30 || e.deltaY < -30) {
+        } else {
           prevSlide();
         }
         setTimeout(() => { wheelDebounce = false; }, 400);
       }
     }, { passive: true });
-
-    window.addEventListener('resize', fitActiveSlide);
-    window.addEventListener('orientationchange', () => setTimeout(fitActiveSlide, 200));
 
     // ==================== BEFORE / AFTER SLIDER ====================
     function updateBeforeAfter(val) {
@@ -1785,7 +1758,7 @@
 
     const poiData = {
       santaCruz: {
-        coords: [6.1665, -75.6062],
+        coords: [6.1681, -75.6036],
         title: "📍 Barrio La Santa Cruz (Cras. 40 y 41)",
         desc: "Núcleo del estudio en la Comuna 1 de Itagüí. Nació en los años 70 sobre el antiguo botadero municipal y logró su pavimentación total en 2025–2026.",
         bullets: [
@@ -1795,8 +1768,8 @@
         ]
       },
       autopistaSur: {
-        coords: [6.1672, -75.6075],
-        title: "🚛 Borde Oeste: Autopista Sur (Cra. 42)",
+        coords: [6.1695, -75.6041],
+        title: "🚛 Borde Oeste: Autopista Sur (Cra. 42) / Mercolanta / Polideportivo",
         desc: "Corredor nacional de carga pesada que separa el barrio del resto de Itagüí.",
         bullets: [
           "<strong>Ambiente:</strong> Humo diésel PM2.5 y ruido >75 dB.",
@@ -1805,27 +1778,27 @@
         ]
       },
       metroItagui: {
-        coords: [6.1630, -75.6066],
-        title: "🚆 Borde Este: Metro y Río Medellín",
-        desc: "Límite oriental junto a la canalización del río y la Estación Itagüí.",
+        coords: [6.1665, -75.6033],
+        title: "🚆 Borde Este: Línea Férrea Metro y Río Medellín",
+        desc: "Límite oriental inmediato junto a la canalización del río Medellín y la vía férrea.",
         bullets: [
           "<strong>Hito 1989:</strong> Creación de la JAC ante obras del Metro.",
           "<strong>Movilidad:</strong> Conexión directa hacia Medellín."
         ]
       },
       coltejer: {
-        coords: [6.1715, -75.6068],
-        title: "🏭 Frontera Norte: Filtro de Coltejer / Zona Industrial",
-        desc: "Antiguos terrenos textiles y fabriles contiguos al barrio.",
+        coords: [6.1672, -75.6050],
+        title: "🏭 Frontera Industrial: Bodegas Calle 51 / Antiguo Filtro de Coltejer",
+        desc: "Complejos fabriles y logísticos contiguos al costado occidental del barrio.",
         bullets: [
-          "<strong>Frontera Social:</strong> Hoy megaproyecto cerrado 'Ciudad Coltejer'.",
-          "<strong>Contraste:</strong> Torres privadas frente a autoconstrucción obrera."
+          "<strong>Frontera Social:</strong> Bodegas industriales y megaproyecto 'Ciudad Coltejer'.",
+          "<strong>Contraste:</strong> Grandes naves empresariales frente a autoconstrucción obrera."
         ]
       },
       mayorca: {
-        coords: [6.1608, -75.6052],
-        title: "🛍️ Frontera Sur: Mayorca, Envigado y Sabaneta",
-        desc: "Nodo comercial y residencial de estratos 4 a 6 a pocos metros del barrio.",
+        coords: [6.1610, -75.6048],
+        title: "🛍️ Frontera Sur/Este: Av. Las Vegas, Mayorca, Envigado y Sabaneta",
+        desc: "Corredor comercial y residencial de estratos 4 a 6 a pocos metros del barrio.",
         bullets: [
           "<strong>Pobreza Relativa:</strong> Contraste entre vitrinas de lujo y subsistencia.",
           "<strong>Trabajo:</strong> Empleo tercerizado en aseo, vigilancia y logística."
@@ -1877,7 +1850,7 @@
         mapInstance = null;
       }
 
-      mapInstance = L.map('map-itagui').setView([6.1665, -75.6062], 16);
+      mapInstance = L.map('map-itagui').setView([6.1678, -75.6035], 17);
 
       satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         maxZoom: 19,
@@ -1889,43 +1862,71 @@
         opacity: 0.85
       }).addTo(mapInstance);
 
-      // Polígono aproximado del Barrio La Santa Cruz (entre Autopista Sur y Línea del Metro, Carreras 40 y 41)
+      // Croquis exacto del Barrio La Santa Cruz (Carreras 40 y 41 junto al Río Medellín, idéntico a media/image12.png)
       const barrioPolygon = L.polygon([
-        [6.1684, -75.6071],
-        [6.1684, -75.6054],
-        [6.1645, -75.6058],
-        [6.1645, -75.6074]
+        [6.17082, -75.60245],
+        [6.17065, -75.60233],
+        [6.17027, -75.60251],
+        [6.16976, -75.60271],
+        [6.16895, -75.60292],
+        [6.16830, -75.60305],
+        [6.16771, -75.60317],
+        [6.16748, -75.60322],
+        [6.16711, -75.60342],
+        [6.16695, -75.60349],
+        [6.16622, -75.60364],
+        [6.16549, -75.60377],
+        [6.16514, -75.60386],
+        [6.16493, -75.60396],
+        [6.16478, -75.60412],
+        [6.16482, -75.60432],
+        [6.16515, -75.60418],
+        [6.16555, -75.60405],
+        [6.16625, -75.60390],
+        [6.16695, -75.60375],
+        [6.16735, -75.60366],
+        [6.16760, -75.60382],
+        [6.16784, -75.60402],
+        [6.16805, -75.60418],
+        [6.16835, -75.60412],
+        [6.16852, -75.60392],
+        [6.16860, -75.60355],
+        [6.16875, -75.60336],
+        [6.16898, -75.60328],
+        [6.16931, -75.60320],
+        [6.16954, -75.60315],
+        [6.16981, -75.60306],
+        [6.17004, -75.60297],
+        [6.17028, -75.60286],
+        [6.17052, -75.60274],
+        [6.17084, -75.60264]
       ], {
-        color: '#D95D39',
-        weight: 3,
-        fillColor: '#D95D39',
-        fillOpacity: 0.32
+        color: '#3CFF88',
+        weight: 5,
+        fillColor: '#3CFF88',
+        fillOpacity: 0.16,
+        lineJoin: 'round'
       }).addTo(mapInstance);
 
-      barrioPolygon.bindPopup("<b>Polígono Barrio La Santa Cruz (Itagüí)</b><br>Carreras 40 y 41 conectadas a la Autopista Sur.<br>100% pavimentado en 2025-2026.");
+      barrioPolygon.bindPopup("<b>Croquis Barrio La Santa Cruz (Itagüí)</b><br>Carreras 40 y 41 entre la Zona Industrial / Autopista Sur y el Río Medellín.<br>100% pavimentado en 2025-2026.");
       barrioPolygon.on('click', () => updatePOIPanel('santaCruz'));
 
-      // Polígono de contraste: Frontera Industrial / Ciudad Coltejer
-      const fronteraPolygon = L.polygon([
-        [6.1745, -75.6085],
-        [6.1745, -75.6048],
-        [6.1686, -75.6053],
-        [6.1686, -75.6082]
-      ], {
-        color: '#E9C46A',
-        weight: 2,
-        dashArray: '6, 6',
-        fillColor: '#E9C46A',
-        fillOpacity: 0.18
+      // Etiqueta central LA SANTA CRUZ como en la imagen de referencia
+      L.marker([6.16805, -75.60358], {
+        interactive: false,
+        icon: L.divIcon({
+          className: 'santa-cruz-label',
+          html: '<div style="color:#fff;font-weight:900;font-size:13px;line-height:1.1;text-align:center;text-shadow:0 2px 6px #000,0 0 3px #000;letter-spacing:0.06em;pointer-events:none;">LA SANTA<br>CRUZ</div>',
+          iconSize: [110, 34],
+          iconAnchor: [55, 17]
+        })
       }).addTo(mapInstance);
-      fronteraPolygon.bindPopup("<b>Frontera Industrial e Inmobiliaria</b><br>Antiguo Filtro de Coltejer / Zona Industrial Comuna 1 y megaproyectos residenciales.");
-      fronteraPolygon.on('click', () => updatePOIPanel('coltejer'));
 
       // Helper for custom colored circle markers
       function createMarker(key, color) {
         const d = poiData[key];
         const m = L.circleMarker(d.coords, {
-          radius: 10,
+          radius: 9,
           fillColor: color,
           color: '#ffffff',
           weight: 2.5,
@@ -1937,7 +1938,7 @@
         return m;
       }
 
-      createMarker('santaCruz', '#D95D39');
+      createMarker('santaCruz', '#3CFF88');
       createMarker('autopistaSur', '#E63946');
       createMarker('metroItagui', '#2A9D8F');
       createMarker('coltejer', '#E9C46A');
@@ -2016,13 +2017,13 @@
         mapInstance.flyTo([6.205, -75.592], 12, { duration: 1.4 });
         updatePOIPanel('medellinCentro');
       } else if (scale === 'itagui') {
-        mapInstance.flyTo([6.171, -75.610], 14, { duration: 1.4 });
+        mapInstance.flyTo([6.170, -75.608], 14, { duration: 1.4 });
         updatePOIPanel('hospitalSur');
       } else if (scale === 'frontera') {
-        mapInstance.flyTo([6.1665, -75.6062], 15, { duration: 1.4 });
+        mapInstance.flyTo([6.1678, -75.6038], 16, { duration: 1.4 });
         updatePOIPanel('coltejer');
       } else {
-        mapInstance.flyTo([6.1665, -75.6062], 17, { duration: 1.4 });
+        mapInstance.flyTo([6.1678, -75.6035], 17, { duration: 1.4 });
         updatePOIPanel('santaCruz');
       }
     }
