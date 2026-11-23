@@ -838,7 +838,7 @@
   <!-- BARRA FLOTANTE DE CONTROL Y NAVEGACIÓN -->
   <nav class="floating-nav-dock" aria-label="Navegación de diapositivas">
     <button class="nav-dock-btn" onclick="prevSlide()" title="Diapositiva anterior (Flecha Izquierda)">◀ Anterior</button>
-    <span class="nav-dock-counter" id="dockCounter">01 / 18</span>
+    <span class="nav-dock-counter" id="dockCounter">01 / 17</span>
     <button class="nav-dock-btn" onclick="nextSlide()" title="Siguiente diapositiva (Flecha Derecha)">Siguiente ▶</button>
   </nav>
 
@@ -888,53 +888,7 @@
       </div>
     </section>
 
-    <!-- ==================== SLIDE 2: MARCO TEÓRICO JOAN BENACH ==================== -->
-    <section class="slide" data-title="Joan Benach: Mirar la Salud">
-      <div class="slide-header">
-        <div>
-          <div class="kicker">👁️ Marco Epistemológico</div>
-          <h2 class="slide-title">“Aprender a Mirar la Salud” (Benach & Muntaner)</h2>
-          <p class="slide-subtitle">Cómo la desigualdad social se incorpora biológicamente en los cuerpos.</p>
-        </div>
-      </div>
-
-      <div class="grid-2">
-        <div class="card card-terracotta">
-          <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
-            <img src="assets/benach_portada.png" alt="Portada Aprender a Mirar la Salud" onclick="openLightbox(this.src)" style="width: 130px; border-radius: 12px; cursor: zoom-in; flex-shrink: 0;" />
-            <div style="flex: 1; min-width: 240px;">
-              <h3>4 Claves para Mirar</h3>
-              <ul>
-                <li><strong>Ver vs. Mirar:</strong> Mirar con sensibilidad y razón crítica.</li>
-                <li><strong>Inequidad:</strong> Brechas <em>innecesarias, evitables e injustas</em>.</li>
-                <li><strong>Cifras con rostro:</strong> Enferman las poblaciones, no solo individuos.</li>
-                <li><strong>No culpar a la víctima:</strong> El salario y el barrio condicionan la vida.</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="worked-box" style="margin-top: 18px;">
-            <span class="worked-badge">5 Rasgos de la Desigualdad (Cap. VI)</span>
-            <p style="font-size: 1.05rem; color: var(--text-main);">
-              <strong>1. Enormes</strong> • <strong>2. Graduales</strong> • <strong>3. Crecientes</strong> • <strong>4. Adaptativas</strong> (<em>Ley Inversa de Atención</em>) • <strong>5. Históricas</strong> (<em>“La política es medicina a gran escala”</em>).
-            </p>
-          </div>
-        </div>
-
-        <div class="card card-teal">
-          <h3>🎥 Joan Benach: Desigualdad y Salud</h3>
-          <div class="video-frame" style="margin-top: 10px;">
-            <iframe src="https://www.youtube.com/embed/yu8GYx_PAfE" title="Joan Benach - Desigualdades sociales en salud" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; font-size: 0.95rem; color: var(--text-muted);">
-            <span>📌 <strong>Embodiment (Nancy Krieger):</strong> El cuerpo expresa la historia de su barrio.</span>
-            <a href="https://www.youtube.com/watch?v=yu8GYx_PAfE" target="_blank" style="color: var(--teal-light); font-weight: 700; text-decoration: none;">YouTube ↗</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== SLIDE 3: MAPA INTERACTIVO EN VIVO ==================== -->
+    <!-- ==================== SLIDE 2: MAPA INTERACTIVO EN VIVO ==================== -->
     <section class="slide" data-title="Ubicación Interactiva">
       <div class="slide-header">
         <div>
@@ -1638,7 +1592,7 @@
       const progressEl = document.getElementById('progressFill');
       if (progressEl) progressEl.style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
 
-      if (currentSlide === 2 && mapInstance) {
+      if (slides[currentSlide] && slides[currentSlide].querySelector('#map-itagui') && mapInstance) {
         setTimeout(() => mapInstance.invalidateSize(), 150);
       }
 
