@@ -1522,28 +1522,43 @@
       </div>
     </section>
 
-    <!-- ==================== SLIDE 18: CONCLUSIÓN FINAL (PARTE 2) ==================== -->
+    <!-- ==================== SLIDE 17: CONCLUSIÓN FINAL Y RECORRIDO TERRITORIAL ==================== -->
     <section class="slide" data-title="Conclusión Salubrista">
       <div class="slide-header">
         <div>
           <div class="kicker">🌅 Conclusión Salubrista • Numeral 5</div>
-          <h2 class="slide-title">Objeto, Trabajo, Transformación y Finalidad de la Salud Pública</h2>
+          <h2 class="slide-title">Objeto, Transformación y Finalidad en Salud Pública</h2>
           <p class="slide-subtitle">“Aprender a mirar hasta llegar a ver... Defender la salud, defender la alegría” (Joan Benach).</p>
         </div>
       </div>
 
-      <div class="grid-3">
-        <div class="card card-terracotta">
-          <strong style="color: var(--terracotta-light); display: block; font-size: 1.25rem; margin-bottom: 8px;">🔬 OBJETO DE ESTUDIO</strong>
-          <p>No es la enfermedad individual aislada ni el órgano biológico descontextualizado, sino el <strong>proceso salud-enfermedad-cuidado colectivo</strong> en su determinación histórica, territorial y social.</p>
+      <div class="grid-2" style="grid-template-columns: 1.55fr 0.85fr; align-items: stretch;">
+        <div style="display: flex; flex-direction: column; gap: 16px; justify-content: center;">
+          <div class="card card-terracotta" style="padding: 20px 24px;">
+            <strong style="color: var(--terracotta-light); display: block; font-size: 1.15rem; margin-bottom: 6px;">🔬 OBJETO DE ESTUDIO</strong>
+            <p>El <strong>proceso salud-enfermedad-cuidado colectivo</strong> en su determinación histórica, territorial y social.</p>
+          </div>
+          <div class="card card-teal" style="padding: 20px 24px;">
+            <strong style="color: var(--teal-light); display: block; font-size: 1.15rem; margin-bottom: 6px;">🛠️ TRABAJO Y TRANSFORMACIÓN</strong>
+            <p><em>“Diagnosticar y no actuar no es ético”</em> (Benach): pavimentar calles, sanear viviendas y dignificar el trabajo popular.</p>
+          </div>
+          <div class="card card-amber" style="padding: 20px 24px;">
+            <strong style="color: var(--amber); display: block; font-size: 1.15rem; margin-bottom: 6px;">🌅 FINALIDAD ÉTICO-POLÍTICA</strong>
+            <p>Equidad y justicia social para una vida <strong>“autónoma, solidaria y gozosa”</strong> (Jordi Gol).</p>
+          </div>
         </div>
-        <div class="card card-teal">
-          <strong style="color: var(--teal-light); display: block; font-size: 1.25rem; margin-bottom: 8px;">🛠️ TRABAJO Y TRANSFORMACIÓN</strong>
-          <p><em>“Diagnosticar la realidad y no actuar no es ética ni políticamente aceptable”</em> (Benach). Transformar es pavimentar calles, sanear viviendas y dignificar el trabajo popular.</p>
-        </div>
-        <div class="card card-amber">
-          <strong style="color: var(--amber); display: block; font-size: 1.25rem; margin-bottom: 8px;">🌅 FINALIDAD ÉTICO-POLÍTICA</strong>
-          <p>Lograr la equidad y la justicia social para que toda comunidad disfrute de una vida <strong>“autónoma, solidaria y gozosa”</strong> (Jordi Gol). Defender la salud pública es defender la vida digna.</p>
+
+        <div class="card card-teal" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;">
+          <h3 style="margin-bottom: 10px; font-size: 1.15rem;">🛵 Recorrido Real por La Santa Cruz (2026)</h3>
+          <div style="width: 100%; max-width: 280px; aspect-ratio: 9 / 16; border-radius: 16px; overflow: hidden; background: #000; box-shadow: 0 12px 32px rgba(0,0,0,0.45); border: 1px solid var(--border-subtle);">
+            <video controls playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+              <source src="assets/recorrido_santa_cruz.mp4" type="video/mp4" />
+              Tu navegador no soporta la reproducción de video HTML5.
+            </video>
+          </div>
+          <p style="font-size: 0.88rem; margin-top: 10px; text-align: center; color: var(--text-muted);">
+            Transformación vial de las Carreras 40 y 41 vista desde el territorio.
+          </p>
         </div>
       </div>
     </section>
@@ -1636,7 +1651,7 @@
     let isTouching = false;
 
     function isInteractiveTarget(target) {
-      return !!target.closest('#map-itagui, .ba-slider-wrapper, input, button, a, iframe');
+      return !!target.closest('#map-itagui, .ba-slider-wrapper, input, button, a, iframe, video');
     }
 
     window.addEventListener('touchstart', (e) => {
