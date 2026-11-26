@@ -228,20 +228,20 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      font-size: 0.92rem;
+      font-size: clamp(0.95rem, 1.15vw, 1.12rem);
       text-transform: uppercase;
       letter-spacing: 1.5px;
       font-weight: 800;
       color: var(--amber);
       background: rgba(233, 196, 106, 0.15);
       border: none;
-      padding: 6px 16px;
+      padding: 7px 18px;
       border-radius: 999px;
       margin-bottom: 10px;
     }
 
     .slide-title {
-      font-size: clamp(2.1rem, 3.2vw, 3.1rem);
+      font-size: clamp(2.35rem, 3.6vw, 3.45rem);
       font-weight: 800;
       color: #fff;
       line-height: 1.08;
@@ -250,11 +250,11 @@
     }
 
     .slide-subtitle {
-      font-size: clamp(1.15rem, 1.5vw, 1.38rem);
+      font-size: clamp(1.3rem, 1.72vw, 1.65rem);
       font-weight: 500;
       color: var(--text-muted);
-      max-width: 1100px;
-      margin-top: 6px;
+      max-width: 1180px;
+      margin-top: 8px;
       letter-spacing: -0.01em;
     }
 
@@ -287,7 +287,7 @@
       -webkit-backdrop-filter: blur(18px);
       border: none;
       border-radius: 26px;
-      padding: 28px 30px;
+      padding: 26px 28px;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.34);
       transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
       overflow: hidden;
@@ -311,7 +311,7 @@
     }
 
     .card h3 {
-      font-size: clamp(1.32rem, 1.65vw, 1.62rem);
+      font-size: clamp(1.55rem, 2.05vw, 1.98rem);
       font-weight: 800;
       color: #fff;
       margin-bottom: 14px;
@@ -323,18 +323,22 @@
       border: none;
       padding: 0;
       box-shadow: none;
-      line-height: 1.2;
+      line-height: 1.18;
     }
 
-    /* FLOATING TEXT ON GLASS - SCALED UP FOR HIGH LEGIBILITY */
+    /* FLOATING TEXT ON GLASS - EXTRA LARGE LEGIBILITY FOR PROJECTOR */
     .card p {
-      font-size: clamp(1.12rem, 1.32vw, 1.3rem);
+      font-size: clamp(1.38rem, 1.75vw, 1.68rem);
       color: var(--text-muted);
       background: transparent;
       border: none;
       padding: 0;
       box-shadow: none;
-      line-height: 1.5;
+      line-height: 1.42;
+    }
+
+    .card p strong {
+      color: #FFFFFF;
     }
 
     .card ul {
@@ -342,27 +346,27 @@
       padding-left: 0;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
     }
 
     .card li {
-      font-size: clamp(1.1rem, 1.28vw, 1.26rem);
+      font-size: clamp(1.34rem, 1.68vw, 1.62rem);
       color: var(--text-muted);
       background: transparent;
       border: none;
-      padding: 0 0 0 20px;
+      padding: 0 0 0 24px;
       box-shadow: none;
       position: relative;
-      line-height: 1.46;
+      line-height: 1.4;
     }
 
     .card li::before {
       content: "";
       position: absolute;
       left: 0;
-      top: 11px;
-      width: 8px;
-      height: 8px;
+      top: 13px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
       background: var(--terracotta-light);
       box-shadow: 0 0 8px rgba(240, 123, 88, 0.6);
@@ -413,7 +417,7 @@
     .hero-quote {
       font-family: 'Playfair Display', Georgia, serif;
       font-style: italic;
-      font-size: clamp(1.38rem, 1.85vw, 1.75rem);
+      font-size: clamp(1.55rem, 2.1vw, 2.02rem);
       color: var(--amber);
       background: transparent;
       border: none;
@@ -421,7 +425,7 @@
       margin: 22px 0 0;
       box-shadow: none;
       text-shadow: 0 2px 18px rgba(0, 0, 0, 0.85);
-      line-height: 1.42;
+      line-height: 1.38;
     }
 
     .stat-pill-grid {
@@ -448,7 +452,7 @@
     }
 
     .stat-num {
-      font-size: clamp(2.1rem, 2.9vw, 2.75rem);
+      font-size: clamp(2.4rem, 3.3vw, 3.1rem);
       font-weight: 800;
       color: var(--terracotta-light);
       letter-spacing: -0.03em;
@@ -457,14 +461,14 @@
     }
 
     .stat-label {
-      font-size: clamp(1rem, 1.2vw, 1.18rem);
+      font-size: clamp(1.2rem, 1.45vw, 1.38rem);
       font-weight: 600;
       color: #E8F1FA;
       margin-top: 8px;
       display: block;
       background: transparent;
       padding: 0;
-      line-height: 1.35;
+      line-height: 1.32;
       text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7);
     }
 
@@ -585,7 +589,7 @@
     table.data-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: clamp(1.05rem, 1.25vw, 1.22rem);
+      font-size: clamp(1.22rem, 1.48vw, 1.44rem);
       background: transparent;
     }
 
@@ -604,7 +608,7 @@
       color: var(--text-muted);
       vertical-align: middle;
       background: transparent;
-      line-height: 1.45;
+      line-height: 1.42;
     }
 
     table.data-table tr:nth-child(even) td {
@@ -689,18 +693,18 @@
 
     .photo-caption {
       padding: 18px 22px;
-      font-size: clamp(1.02rem, 1.2vw, 1.18rem);
+      font-size: clamp(1.2rem, 1.44vw, 1.4rem);
       color: var(--text-muted);
       background: transparent;
       border: none;
       box-shadow: none;
-      line-height: 1.42;
+      line-height: 1.38;
     }
 
     .photo-caption strong {
       color: #fff;
       display: block;
-      font-size: clamp(1.12rem, 1.3vw, 1.28rem);
+      font-size: clamp(1.32rem, 1.58vw, 1.54rem);
       margin-bottom: 6px;
     }
 
@@ -711,8 +715,8 @@
       -webkit-backdrop-filter: blur(16px);
       border: none;
       border-radius: 20px;
-      padding: 20px 24px;
-      margin-top: 16px;
+      padding: 18px 22px;
+      margin-top: 14px;
       box-shadow: none;
       transition: transform 0.25s ease;
     }
@@ -726,9 +730,9 @@
       display: inline-block;
       background: var(--teal);
       color: #fff;
-      font-size: 0.88rem;
+      font-size: 1.02rem;
       font-weight: 800;
-      padding: 5px 14px;
+      padding: 6px 14px;
       border-radius: 99px;
       text-transform: uppercase;
       margin-bottom: 10px;
@@ -761,7 +765,7 @@
     .bar-top {
       display: flex;
       justify-content: space-between;
-      font-size: 1.05rem;
+      font-size: 1.22rem;
       font-weight: 700;
       margin-bottom: 6px;
     }
@@ -838,7 +842,7 @@
   <!-- BARRA FLOTANTE DE CONTROL Y NAVEGACIÓN -->
   <nav class="floating-nav-dock" aria-label="Navegación de diapositivas">
     <button class="nav-dock-btn" onclick="prevSlide()" title="Diapositiva anterior (Flecha Izquierda)">◀ Anterior</button>
-    <span class="nav-dock-counter" id="dockCounter">01 / 17</span>
+    <span class="nav-dock-counter" id="dockCounter">01 / 16</span>
     <button class="nav-dock-btn" onclick="nextSlide()" title="Siguiente diapositiva (Flecha Derecha)">Siguiente ▶</button>
   </nav>
 
@@ -855,33 +859,33 @@
       <div class="hero-banner">
         <div class="hero-grid">
           <div>
-            <div class="kicker" style="font-size: 0.88rem; padding: 6px 16px; margin-bottom: 14px;">📍 Itagüí • Comuna 1</div>
-            <h1 style="font-size: clamp(2.4rem, 4vw, 3.6rem); font-weight: 800; color: #fff; line-height: 1.08; letter-spacing: -0.03em; text-shadow: 0 4px 24px rgba(0,0,0,0.75);">
+            <div class="kicker" style="padding: 7px 18px; margin-bottom: 14px;">📍 Itagüí • Comuna 1</div>
+            <h1 style="font-size: clamp(2.6rem, 4.4vw, 4rem); font-weight: 800; color: #fff; line-height: 1.06; letter-spacing: -0.03em; text-shadow: 0 4px 24px rgba(0,0,0,0.75);">
               Barrio La Santa Cruz<br>
               <span style="color: var(--terracotta-light);">“Aprender a Mirar la Salud”</span>
             </h1>
-            <blockquote class="hero-quote" style="margin-top: 16px;">
+            <blockquote class="hero-quote" style="margin-top: 18px;">
               “La salud no la elige quien quiere, sino quien puede.”
-              <div style="font-size: 0.95rem; font-style: normal; color: #E2ECF7; margin-top: 6px;">— Joan Benach & Carles Muntaner</div>
+              <div style="font-size: 1.12rem; font-style: normal; color: #E2ECF7; margin-top: 8px;">— Joan Benach & Carles Muntaner</div>
             </blockquote>
           </div>
 
           <div class="stat-pill-grid">
             <div class="stat-box">
               <span class="stat-num">1970</span>
-              <span class="stat-label">Origen reciclador</span>
+              <span class="stat-label">Origen reciclador (JAC)</span>
             </div>
             <div class="stat-box">
               <span class="stat-num">40 Años</span>
-              <span class="stat-label">Entre polvo y pantano</span>
+              <span class="stat-label">Polvo y pantano (Q’hubo)</span>
             </div>
             <div class="stat-box">
               <span class="stat-num">~4.000</span>
-              <span class="stat-label">Habitantes Comuna 1</span>
+              <span class="stat-label">Habitantes (DANE / SISBÉN IV)</span>
             </div>
             <div class="stat-box">
               <span class="stat-num" style="color: var(--teal-light);">100%</span>
-              <span class="stat-label">Pavimentado (2026)</span>
+              <span class="stat-label">Pavimentado 2026 (Alcaldía)</span>
             </div>
           </div>
         </div>
@@ -892,7 +896,7 @@
     <section class="slide" data-title="Ubicación Interactiva">
       <div class="slide-header">
         <div>
-          <div class="kicker">🛰️ Georreferenciación Satelital</div>
+          <div class="kicker">🛰️ Georreferenciación Satelital (Esri / PBOT Itagüí)</div>
           <h2 class="slide-title">Ubicación en Medellín, Valle de Aburrá e Itagüí</h2>
         </div>
       </div>
@@ -904,35 +908,35 @@
         <button class="map-btn active" onclick="flyToScale('barrio')">📍 4. Barrio La Santa Cruz</button>
       </div>
 
-      <div class="grid-2" style="grid-template-columns: 1.5fr 0.9fr;">
+      <div class="grid-2" style="grid-template-columns: 1.45fr 0.95fr;">
         <div>
           <div id="map-itagui"></div>
         </div>
 
         <div class="card card-amber" id="mapInfoPanel">
-          <span class="worked-badge" style="background: var(--terracotta);">Ficha Satelital</span>
+          <span class="worked-badge" style="background: var(--terracotta);">Ficha Satelital (Esri / PBOT)</span>
           <h3 id="poiTitle" style="margin-top: 6px;">📍 Barrio La Santa Cruz</h3>
           <p id="poiDesc" style="margin-bottom: 12px; color: var(--text-main);">
-            Costado suroriental de la <strong>Comuna 1 de Itagüí</strong>, a 15 min del centro de Medellín.
+            <strong>Comuna 1 de Itagüí</strong>, a <strong>15 min</strong> de Medellín.
           </p>
           <ul id="poiBullets">
-            <li><strong>Occidente:</strong> Autopista Sur (Cra. 42).</li>
-            <li><strong>Oriente:</strong> Río Medellín y Línea A del Metro.</li>
-            <li><strong>Norte:</strong> Antiguo Filtro de Coltejer y Zona Industrial.</li>
-            <li><strong>Sur:</strong> Nodo Mayorca, Envigado y Sabaneta.</li>
+            <li><strong>Oeste:</strong> Autopista Sur (Cra. 42).</li>
+            <li><strong>Este:</strong> Río Medellín y Metro Línea A.</li>
+            <li><strong>Norte:</strong> Filtro Coltejer y Zona Industrial.</li>
+            <li><strong>Sur:</strong> Mayorca, Envigado y Sabaneta.</li>
           </ul>
-          <div class="worked-box" style="margin-top: 14px; padding: 10px 14px;">
-            <strong style="font-size: 0.9rem; color: var(--amber);">💡 Toca cualquier pin del mapa</strong>
+          <div class="worked-box" style="margin-top: 14px; padding: 12px 16px;">
+            <strong style="font-size: 1.12rem; color: var(--amber);">💡 Toca cualquier pin del mapa</strong>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ==================== SLIDE 4: BORDES Y LÍMITES (PARTE 1) ==================== -->
+    <!-- ==================== SLIDE 3: BORDES Y LÍMITES (PARTE 1) ==================== -->
     <section class="slide" data-title="Límites Geográficos: 4 Bordes">
       <div class="slide-header">
         <div>
-          <div class="kicker">🧭 Unidad Territorio / Población</div>
+          <div class="kicker">🧭 Unidad Territorio / Población (SIATA / AMVA)</div>
           <h2 class="slide-title">Un Enclave Popular “Encajonado”: Los 4 Bordes</h2>
           <p class="slide-subtitle">Cómo las fronteras viales, férreas e industriales condicionan la salud de La Santa Cruz.</p>
         </div>
@@ -941,43 +945,43 @@
       <div class="grid-4">
         <div class="card card-terracotta">
           <h3>🚛 Oeste: Autopista Sur</h3>
-          <p>Corredor nacional de carga pesada conectado a las Cras. 40 y 41.</p>
-          <div style="margin-top: 12px; font-size: 0.95rem; color: var(--terracotta-light); font-weight: 700;">
-            ⚠️ Humo diésel PM2.5 y ruido >75 dB.
-          </div>
+          <p>Carga pesada conectada a <strong>Cras. 40 y 41</strong>.</p>
+          <p style="margin-top: 12px; color: var(--terracotta-light); font-weight: 700;">
+            ⚠️ PM<sub>2.5</sub> (SIATA) y ruido &gt;75 dB (AMVA).
+          </p>
         </div>
 
         <div class="card card-teal">
           <h3>🚆 Este: Metro y Río</h3>
-          <p>Colinda con el río Medellín y la Estación Itagüí del Metro.</p>
-          <div style="margin-top: 12px; font-size: 0.95rem; color: var(--teal-light); font-weight: 700;">
-            🛡️ Conectividad masiva y defensa comunal (1989).
-          </div>
+          <p>Río Medellín y <strong>Estación Itagüí</strong>.</p>
+          <p style="margin-top: 12px; color: var(--teal-light); font-weight: 700;">
+            🛡️ Movilidad masiva y resistencia JAC (1989).
+          </p>
         </div>
 
         <div class="card card-amber">
           <h3>🏭 Norte: Filtro Coltejer</h3>
-          <p>Adosado a las Zonas Industriales 1 y 2 y antiguos predios textiles.</p>
-          <div style="margin-top: 12px; font-size: 0.95rem; color: var(--amber); font-weight: 700;">
+          <p><strong>Zonas Industriales 1 y 2</strong> y predios textiles.</p>
+          <p style="margin-top: 12px; color: var(--amber); font-weight: 700;">
             🏙️ Hoy torres cerradas “Ciudad Coltejer”.
-          </div>
+          </p>
         </div>
 
         <div class="card card-terracotta">
           <h3>🛍️ Sur: Nodo Mayorca</h3>
-          <p>Triple frontera municipal: Itagüí, Envigado y Sabaneta.</p>
-          <div style="margin-top: 12px; font-size: 0.95rem; color: var(--terracotta-light); font-weight: 700;">
-            ⚖️ Contraste extremo frente al hiperconsumo.
-          </div>
+          <p>Triple límite: Itagüí, Envigado y Sabaneta.</p>
+          <p style="margin-top: 12px; color: var(--terracotta-light); font-weight: 700;">
+            ⚖️ Contraste frente al hiperconsumo.
+          </p>
         </div>
       </div>
     </section>
 
-    <!-- ==================== SLIDE 5: BORDES Y LÍMITES (PARTE 2: REGISTRO FOTOGRÁFICO) ==================== -->
+    <!-- ==================== SLIDE 4: BORDES Y LÍMITES (PARTE 2: REGISTRO FOTOGRÁFICO) ==================== -->
     <section class="slide" data-title="Morfología y Conectividad">
       <div class="slide-header">
         <div>
-          <div class="kicker">🧭 Registro Visual del Territorio</div>
+          <div class="kicker">🧭 Registro Visual del Territorio (Salida de Campo / Alcaldía)</div>
           <h2 class="slide-title">Morfología Urbana y Conectividad Vial (2025–2026)</h2>
           <p class="slide-subtitle">Apropiación popular del espacio tras cuatro décadas de espera por infraestructura.</p>
         </div>
@@ -987,32 +991,32 @@
         <div class="photo-card">
           <img src="assets/santa_cruz_qhubo.jpg" alt="Vista general La Santa Cruz Itagüí" onclick="openLightbox(this.src)" />
           <div class="photo-caption">
-            <strong>Morfología urbana consolidada</strong>
-            Viviendas de 1 a 3 pisos en mampostería junto al corredor del sur.
+            <strong>Morfología urbana (Q’hubo)</strong>
+            Casas de 1 a 3 pisos en mampostería.
           </div>
         </div>
         <div class="photo-card">
           <img src="assets/santa_cruz_2026_2.jpg" alt="Conexión vial Carreras 40 y 41" onclick="openLightbox(this.src)" />
           <div class="photo-caption">
-            <strong>Carreras 40 y 41 (2026)</strong>
-            Conexión pavimentada directa con la Autopista Sur.
+            <strong>Cras. 40 y 41 • 2026 (Alcaldía)</strong>
+            Conexión pavimentada con Autopista Sur.
           </div>
         </div>
         <div class="photo-card">
           <img src="assets/santa_cruz_comunidad_2025.jpg" alt="Tejido social en La Santa Cruz" onclick="openLightbox(this.src)" />
           <div class="photo-caption">
-            <strong>Vida comunitaria en Comuna 1</strong>
-            La calle pavimentada como espacio digno de encuentro vecinal.
+            <strong>Vida comunitaria • Comuna 1</strong>
+            Calle digna tras 40 años de espera.
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ==================== SLIDE 6: HISTORIA (PARTE 1: LÍNEA DE TIEMPO) ==================== -->
+    <!-- ==================== SLIDE 5: HISTORIA (PARTE 1: LÍNEA DE TIEMPO) ==================== -->
     <section class="slide" data-title="Historia: Línea de Tiempo">
       <div class="slide-header">
         <div>
-          <div class="kicker">⏳ Historicidad (1970 – 2026)</div>
+          <div class="kicker">⏳ Historicidad (1970 – 2026 • JAC / Alcaldía de Itagüí)</div>
           <h2 class="slide-title">De Antiguo Botadero a Transformación Urbana</h2>
           <p class="slide-subtitle">Comparador interactivo y 55 años de resistencia popular en el territorio.</p>
         </div>
@@ -1033,33 +1037,23 @@
         </div>
 
         <div class="card card-terracotta">
-          <h3>📜 5 Hitos Históricos</h3>
-          <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 8px;">
-            <div style="background: rgba(255, 255, 255, 0.04); padding: 10px 14px; border-radius: 14px;">
-              <strong style="color: var(--amber);">1970 • Origen Reciclador:</strong> Familias de Titiribí y Heliconia sobre el antiguo basurero.
-            </div>
-            <div style="background: rgba(255, 255, 255, 0.04); padding: 10px 14px; border-radius: 14px;">
-              <strong style="color: var(--amber);">Años 80 • Autoconstrucción:</strong> Cierre del botadero y edificación progresiva.
-            </div>
-            <div style="background: rgba(255, 255, 255, 0.04); padding: 10px 14px; border-radius: 14px;">
-              <strong style="color: var(--teal-light);">1989 • Resistencia (JAC):</strong> 67 familias a San Antonio de Prado y el barrio resiste.
-            </div>
-            <div style="background: rgba(255, 255, 255, 0.04); padding: 10px 14px; border-radius: 14px;">
-              <strong style="color: #FF758F);">1990–2024 • 40 Años de Espera:</strong> Polvo en verano y pantano en invierno (alta IRA/EDA).
-            </div>
-            <div style="background: rgba(255, 255, 255, 0.04); padding: 10px 14px; border-radius: 14px;">
-              <strong style="color: #52B788;">2025–2026 • Pavimentación 100%:</strong> $3.510 M con acueducto y vías para ~4.000 hab.
-            </div>
-          </div>
+          <h3>📜 5 Hitos Históricos (JAC / Alcaldía)</h3>
+          <ul style="margin-top: 8px;">
+            <li><strong style="color: var(--amber);">1970 • Origen:</strong> Recicladores de Titiribí y Heliconia en basurero municipal.</li>
+            <li><strong style="color: var(--amber);">Años 80 • Autoconstrucción:</strong> Cierre del botadero y consolidación.</li>
+            <li><strong style="color: var(--teal-light);">1989 • Resistencia (JAC):</strong> 67 familias a El Limonar; el barrio resiste.</li>
+            <li><strong style="color: #FF758F;">1990–2024 • 40 Años:</strong> Polvo y pantano (alta IRA/EDA • ASIS).</li>
+            <li><strong style="color: #52B788;">2025–2026 • 100% Pavimentado:</strong> $3.510 M (Alcaldía/EPM) • ~4.000 hab.</li>
+          </ul>
         </div>
       </div>
     </section>
 
-    <!-- ==================== SLIDE 7: HISTORIA (PARTE 2: CRÓNICA AUDIOVISUAL) ==================== -->
+    <!-- ==================== SLIDE 6: HISTORIA (PARTE 2: CRÓNICA AUDIOVISUAL) ==================== -->
     <section class="slide" data-title="Memoria Viva y Documental">
       <div class="slide-header">
         <div>
-          <div class="kicker">🎬 Crónica Audiovisual</div>
+          <div class="kicker">🎬 Crónica Audiovisual (JAC / Alcaldía de Itagüí)</div>
           <h2 class="slide-title">Memoria Viva y Testimonio Comunitario de La Santa Cruz</h2>
           <p class="slide-subtitle">El derecho a la ciudad y la dignidad conquistada por la propia comunidad.</p>
         </div>
@@ -1075,22 +1069,22 @@
 
         <div style="display: flex; flex-direction: column; gap: 18px;">
           <div class="card card-terracotta">
-            <h3>🛡️ 1989: El Hito de Organización Popular</h3>
-            <p>Ante la amenaza de desalojo total por la Línea A del Metro, la comunidad fundó su Junta de Acción Comunal con personería jurídica. 67 familias aceptaron reubicación y el resto defendió el territorio donde hoy residen.</p>
+            <h3>🛡️ 1989: Organización Popular (JAC)</h3>
+            <p>Ante el Metro, la <strong>JAC</strong> frenó el desalojo: <strong>67 familias</strong> reubicadas y defensa territorial del barrio.</p>
           </div>
           <div class="card card-amber">
-            <h3>🏗️ 2025–2026: Saldo de la Deuda Social</h3>
-            <p>Con $3.510 millones invertidos por la Alcaldía de Itagüí en redes de EPM y pavimento rígido en las Cras. 40 y 41, se superó el estigma sanitario y se garantizó acceso formal para ambulancias y transporte.</p>
+            <h3>🏗️ 2025–2026: Inversión $3.510 M (Alcaldía)</h3>
+            <p><strong>Alcaldía y EPM</strong> en <strong>Cras. 40 y 41</strong>: saneamiento y acceso real para ambulancias.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ==================== SLIDE 8: LA FRONTERA SOCIAL (PARTE 1: SOCIEDAD ARCHIPIÉLAGO) ==================== -->
+    <!-- ==================== SLIDE 7: LA FRONTERA SOCIAL (PARTE 1: SOCIEDAD ARCHIPIÉLAGO) ==================== -->
     <section class="slide" data-title="Frontera Social I: Sociedad Archipiélago">
       <div class="slide-header">
         <div>
-          <div class="kicker">⚖️ Categoría Crítica • Parte 1 de 2</div>
+          <div class="kicker">⚖️ Categoría Crítica • Parte 1 de 2 (Benach &amp; Muntaner, 2005)</div>
           <h2 class="slide-title">La “Frontera Social” y la “Sociedad Archipiélago”</h2>
           <p class="slide-subtitle">El contraste entre el enclave popular de La Santa Cruz y las zonas vecinas inmediatas con mejores condiciones de vida.</p>
         </div>
@@ -1100,55 +1094,55 @@
         <div class="grid-2" style="gap: 16px;">
           <div class="card card-terracotta">
             <h3>1. Sociedad Archipiélago</h3>
-            <p><strong>Benach (p. 43):</strong> Islas de privilegio inmobiliario junto a enclaves populares separados solo por una vía.</p>
+            <p><strong>Benach (p. 43):</strong> Islas de privilegio junto a enclaves populares.</p>
           </div>
           <div class="card card-amber">
             <h3>2. Pobreza Relativa</h3>
-            <p><strong>Wilkinson (p. 54):</strong> Ser pobre junto a una zona rica multiplica el estrés neuroendocrino.</p>
+            <p><strong>Wilkinson (p. 54):</strong> Pobreza junto a riqueza eleva el estrés.</p>
           </div>
           <div class="card card-teal">
             <h3>3. Efecto de Barrio</h3>
-            <p><strong>Diez-Roux (p. 53):</strong> El entorno físico condiciona el riesgo cardiovascular, respiratorio y mental.</p>
+            <p><strong>Diez-Roux (p. 53):</strong> Entorno condiciona riesgo cardiovascular.</p>
           </div>
           <div class="card card-terracotta">
             <h3>4. Injusticia Ambiental</h3>
-            <p><strong>Ecología Política:</strong> Riqueza empresarial privada vs. humo y ruido colectivizados hacia el barrio.</p>
+            <p><strong>Ecología Política:</strong> Riqueza privada vs. humo y ruido barrial.</p>
           </div>
         </div>
 
         <div class="card card-amber">
-          <h3>🏝️ El “Archipiélago Urbano”: La Santa Cruz vs. Zona Vecina</h3>
+          <h3>🏝️ El “Archipiélago Urbano”</h3>
           <div class="grid-2" style="gap: 12px; margin-top: 10px;">
             <div class="photo-card">
-              <img src="assets/santa_cruz_qhubo.jpg" alt="Enclave popular Barrio La Santa Cruz" onclick="openLightbox(this.src)" style="height: 155px;" />
-              <div class="photo-caption" style="padding: 10px 14px; font-size: 0.95rem;">
+              <img src="assets/santa_cruz_qhubo.jpg" alt="Enclave popular Barrio La Santa Cruz" onclick="openLightbox(this.src)" style="height: 150px;" />
+              <div class="photo-caption" style="padding: 12px 14px;">
                 <strong>La Santa Cruz (Estratos 1–2)</strong>
-                Autoconstrucción sin áreas verdes.
+                Autoconstrucción • &lt; 2 m²/hab verde.
               </div>
             </div>
             <div class="photo-card">
-              <img src="assets/para_diapositiva_7.webp" alt="Zona cercana con mejores condiciones de vida - Mayorca" onclick="openLightbox(this.src)" style="height: 155px;" />
-              <div class="photo-caption" style="padding: 10px 14px; font-size: 0.95rem;">
-                <strong>Zona Vecina (Mayorca / Estratos 4–6)</strong>
-                Megacentro comercial y torres médicas modernas.
+              <img src="assets/para_diapositiva_7.webp" alt="Zona cercana con mejores condiciones de vida - Mayorca" onclick="openLightbox(this.src)" style="height: 150px;" />
+              <div class="photo-caption" style="padding: 12px 14px;">
+                <strong>Mayorca (Estratos 4–6)</strong>
+                Megacentro y torres médicas.
               </div>
             </div>
           </div>
-          <div class="photo-card" style="margin-top: 10px;">
+          <div class="photo-card" style="margin-top: 12px;">
             <img src="assets/archipielago_frontera_satelital.jpg" alt="Frontera satelital del archipiélago urbano" onclick="openLightbox(this.src)" style="height: 135px;" />
-            <div class="photo-caption" style="padding: 10px 14px; font-size: 0.92rem;">
-              <strong>Frontera satelital:</strong> El enclave popular rodeado por el nodo Mayorca, Ciudad Coltejer y Envigado.
+            <div class="photo-caption" style="padding: 12px 14px;">
+              <strong>Satélite Esri:</strong> Santa Cruz rodeada por Mayorca, Coltejer y Envigado.
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ==================== SLIDE 9: LA FRONTERA SOCIAL (PARTE 2: MATRIZ EN SALUD PÚBLICA) ==================== -->
+    <!-- ==================== SLIDE 8: LA FRONTERA SOCIAL (PARTE 2: MATRIZ EN SALUD PÚBLICA) ==================== -->
     <section class="slide" data-title="Frontera Social II: Impacto en Salud">
       <div class="slide-header">
         <div>
-          <div class="kicker">⚖️ Categoría Crítica • Parte 2 de 2</div>
+          <div class="kicker">⚖️ Categoría Crítica • Parte 2 de 2 (Benach / ASIS / SISBÉN IV)</div>
           <h2 class="slide-title">¿Cómo Opera la Frontera Social en la Salud Colectiva?</h2>
           <p class="slide-subtitle">Comparación directa entre el barrio La Santa Cruz y su entorno inmediato de mayores ingresos.</p>
         </div>
@@ -1159,46 +1153,46 @@
           <thead>
             <tr>
               <th>Dimensión</th>
-              <th>Enclave Popular: Barrio La Santa Cruz (Estratos 1–2)</th>
-              <th>Zona Cercana de Mejores Condiciones (Coltejer / Mayorca / Envigado - Estratos 4–6)</th>
-              <th>Traducción en Salud Pública (Mirada de Benach)</th>
+              <th>La Santa Cruz (Estratos 1–2)</th>
+              <th>Frontera Vecina (Estratos 4–6)</th>
+              <th>Impacto en Salud (Benach)</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><strong>1. Hábitat y Suelo</strong></td>
-              <td>Autoconstrucción 1–3 pisos sobre antiguo relleno; < 2 m²/hab de zona verde.</td>
-              <td>Ciudadelas verticales cerradas con piscinas, gimnasios, vigilancia y parques.</td>
-              <td>Déficit de espacios recreativos y cardioprotectores para la niñez.</td>
+              <td><strong>1. Hábitat (PBOT/OMS)</strong></td>
+              <td>1–3 pisos sobre relleno; <strong>&lt; 2 m²/hab</strong> verde.</td>
+              <td>Torres cerradas, piscinas y parques (9–15 m² OMS).</td>
+              <td>Déficit recreativo y cardioprotector.</td>
             </tr>
             <tr>
-              <td><strong>2. Trabajo y Capital</strong></td>
-              <td>Reciclaje, ventas callejeras, confección en casa y operarios tercerizados.</td>
-              <td>Grandes industrias, centros logísticos y vitrinas de hiperconsumo (Mayorca).</td>
-              <td>Mayor desgaste osteomuscular y menor remuneración (Virchow).</td>
+              <td><strong>2. Trabajo (DANE)</strong></td>
+              <td>Reciclaje (~60% informal), maquila y operarios.</td>
+              <td>Industrias, logística y hiperconsumo (Mayorca).</td>
+              <td>Desgaste físico y menor salario (<strong>Virchow</strong>).</td>
             </tr>
             <tr>
-              <td><strong>3. Carga Ambiental</strong></td>
-              <td>Casas a ras de vía recibiendo humo diésel PM2.5 y ruido >75 dB.</td>
-              <td>Apartamentos en altura con aislamiento acústico y mayor arborización.</td>
-              <td>Sobrecarga de EPOC, asma infantil, rinitis e insomnio.</td>
+              <td><strong>3. Ambiente (SIATA/AMVA)</strong></td>
+              <td>Casas a ras de vía: <strong>PM<sub>2.5</sub></strong> y <strong>&gt;75 dB</strong>.</td>
+              <td>Aislamiento acústico y arborización.</td>
+              <td>Sobrecarga de EPOC, asma e insomnio.</td>
             </tr>
             <tr>
-              <td><strong>4. Atención Sanitaria</strong></td>
-              <td>Régimen Subsidiado; cruzar la Autopista Sur hacia el Hospital del Sur.</td>
-              <td>Torres médicas privadas en Mayorca y medicina prepagada sin filas.</td>
-              <td><strong>Ley Inversa de Atención (Tudor Hart):</strong> mayores barreras a quien más sufre.</td>
+              <td><strong>4. Atención (SISBÉN IV)</strong></td>
+              <td><strong>~52% Subsidiado</strong>; cruzar al Hospital del Sur.</td>
+              <td>Torres médicas y prepagada sin filas.</td>
+              <td><strong>Ley Inversa (Tudor Hart, p. 66):</strong> más barreras.</td>
             </tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <!-- ==================== SLIDE 10: VIVIENDA Y HÁBITAT (PARTE 1: TIPOLOGÍA) ==================== -->
+    <!-- ==================== SLIDE 9: VIVIENDA Y HÁBITAT (PARTE 1: TIPOLOGÍA) ==================== -->
     <section class="slide" data-title="Vivienda: Tipología y Patologías">
       <div class="slide-header">
         <div>
-          <div class="kicker">🧱 Caracterización Habitacional • Módulo 1</div>
+          <div class="kicker">🧱 Caracterización Habitacional • Módulo 1 (Salida de Campo / EPM)</div>
           <h2 class="slide-title">Tipología de Vivienda, Autoconstrucción y Patologías</h2>
           <p class="slide-subtitle">Diagnóstico constructivo y consecuencias en la salud intramuros.</p>
         </div>
@@ -1206,14 +1200,14 @@
 
       <div class="grid-2">
         <div class="card card-terracotta">
-          <h3>🏠 Diagnóstico Constructivo</h3>
+          <h3>🏠 Diagnóstico Constructivo (Campo)</h3>
           <ul>
-            <li><strong>Materialidad:</strong> Ladrillo sin revoque, losas artesanales y cubiertas de zinc en 3° piso.</li>
-            <li><strong>Densidad (1 a 3 niveles):</strong> Crecimiento vertical familiar e inquilinatos sin norma NSR-10.</li>
-            <li><strong>Patologías intramuros:</strong>
-              <br>• <em>Humedad y salitre:</em> Moho negro en primeros pisos sobre antiguo relleno.
-              <br>• <em>Fisuras:</em> Vibración constante por tractomulas de la Autopista Sur y trenes del Metro.
-              <br>• <em>Poca ventilación:</em> Habitaciones internas oscuras que retienen alérgenos respiratorios.
+            <li><strong>Materialidad:</strong> Ladrillo sin revoque, losas artesanales y zinc en <strong>3° piso</strong>.</li>
+            <li><strong>Densidad (1 a 3 pisos):</strong> Autoconstrucción e inquilinatos sin norma <strong>NSR-10</strong>.</li>
+            <li><strong>Patologías intramuros (OMS):</strong>
+              <br>• <em>Humedad y salitre:</em> Moho negro sobre antiguo relleno.
+              <br>• <em>Fisuras:</em> Vibración de tractomulas (Autopista Sur) y Metro.
+              <br>• <em>Poca ventilación:</em> Cuartos oscuros con alérgenos.
             </li>
           </ul>
         </div>
@@ -1222,26 +1216,26 @@
           <div class="photo-card">
             <img src="assets/para_diapositiva_9.jpeg" alt="Humedad y salitre en muros de vivienda" onclick="openLightbox(this.src)" />
             <div class="photo-caption">
-              <strong>Humedad y salitre intramuros</strong>
-              Deterioro por capilaridad y moho en primeros pisos.
+              <strong>Humedad y salitre (Campo)</strong>
+              Capilaridad y moho en 1° piso.
             </div>
           </div>
           <div class="photo-card">
             <img src="assets/santa_cruz_obras_2025.jpg" alt="Obras de alcantarillado y cimentación vial 2025" onclick="openLightbox(this.src)" />
             <div class="photo-caption">
-              <strong>Saneamiento subterráneo (2025)</strong>
-              Redes nuevas de acueducto y alcantarillado EPM.
+              <strong>Saneamiento 2025 (EPM)</strong>
+              Redes nuevas de acueducto y alcantarillado.
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ==================== SLIDE 11: VIVIENDA Y HÁBITAT (PARTE 2: CASO RESUELTO) ==================== -->
+    <!-- ==================== SLIDE 10: VIVIENDA Y HÁBITAT (PARTE 2: CASO RESUELTO) ==================== -->
     <section class="slide" data-title="Caso Resuelto: Riesgo de Vivienda">
       <div class="slide-header">
         <div>
-          <div class="kicker">🧱 Resolución Módulo 1 de “PARTIENDO DE”</div>
+          <div class="kicker">🧱 Resolución Módulo 1 de “PARTIENDO DE” (PMGRD / EPM)</div>
           <h2 class="slide-title">Caso Resuelto: Riesgo por Topografía, Materialidad y Saneamiento</h2>
           <p class="slide-subtitle">Evaluación salubrista de la vulnerabilidad física y su mitigación en 2026.</p>
         </div>
@@ -1249,38 +1243,29 @@
 
       <div class="grid-2">
         <div class="card card-terracotta">
-          <span class="worked-badge">Evaluación de Riesgo Sanitario y Estructural</span>
-          <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
-            <div>
-              <strong style="color: var(--amber);">1. Variable física:</strong>
-              <p>Pendiente >30° + suelo heterogéneo de antiguo botadero + 3 niveles sin vigas de confinamiento.</p>
-            </div>
-            <div>
-              <strong style="color: var(--terracotta-light);">2. Amenaza y Vulnerabilidad:</strong>
-              <p>Infiltración hídrica por lluvias torrenciales + vibraciones viales continuas de carga pesada.</p>
-            </div>
-            <div>
-              <strong style="color: var(--teal-light);">3. Impacto en Salud y Mitigación 2026:</strong>
-              <p>Asma infantil por humedad, insomnio y riesgo de colapso. Las redes de alcantarillado instaladas en 2025–2026 eliminaron la infiltración pluvial al subsuelo.</p>
-            </div>
-          </div>
+          <span class="worked-badge">Evaluación de Riesgo (Módulo 1)</span>
+          <ul style="margin-top: 8px;">
+            <li><strong style="color: var(--amber);">1. Variable física:</strong> Pendiente <strong>&gt;30°</strong> + relleno antiguo + <strong>3 niveles</strong> sin confinamiento.</li>
+            <li><strong style="color: var(--terracotta-light);">2. Amenaza:</strong> Lluvias torrenciales + vibración pesada (PMGRD).</li>
+            <li><strong style="color: var(--teal-light);">3. Impacto y Mitigación 2026:</strong> Asma, insomnio y colapso; el alcantarillado <strong>2025–2026 (EPM)</strong> frenó la infiltración.</li>
+          </ul>
         </div>
 
         <div class="photo-card">
-          <img src="assets/para_diapositiva_10.jpeg" alt="Topografía en pendiente y materialidad en La Santa Cruz" onclick="openLightbox(this.src)" style="height: 48vh; max-height: 420px;" />
+          <img src="assets/para_diapositiva_10.jpeg" alt="Topografía en pendiente y materialidad en La Santa Cruz" onclick="openLightbox(this.src)" style="height: 44vh; max-height: 390px;" />
           <div class="photo-caption">
-            <strong>Riesgo por topografía y materialidad</strong>
-            Pendiente pronunciada, mampostería sin refuerzo y acceso por callejón estrecho.
+            <strong>Topografía en pendiente y materialidad</strong>
+            Ladera &gt;30°, mampostería sin refuerzo y callejón estrecho.
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ==================== SLIDE 12: EQUIPAMIENTO COLECTIVO (PARTE 1: INSTITUCIONALIDAD) ==================== -->
+    <!-- ==================== SLIDE 11: EQUIPAMIENTO COLECTIVO (PARTE 1: INSTITUCIONALIDAD) ==================== -->
     <section class="slide" data-title="Institucionalidad y Espacio Público">
       <div class="slide-header">
         <div>
-          <div class="kicker">🏛️ Equipamiento Colectivo • Módulo 2</div>
+          <div class="kicker">🏛️ Equipamiento Colectivo • Módulo 2 (Alcaldía / PBOT / JAC)</div>
           <h2 class="slide-title">Institucionalidad, Espacio Público y Vocación</h2>
           <p class="slide-subtitle">Del abandono estatal histórico a la conquista comunitaria de la infraestructura.</p>
         </div>
@@ -1290,37 +1275,37 @@
         <div class="card card-teal">
           <h3>🏛️ Presencia Estatal</h3>
           <ul>
-            <li><strong>Inversión 2025–2026:</strong> $3.510 millones en pavimento total, andenes y redes EPM tras 40 años de olvido.</li>
-            <li><strong>Salud extramural:</strong> Sin hospital interno; atención en <strong>E.S.E. Hospital del Sur</strong> cruzando la Autopista Sur.</li>
-            <li><strong>Salud Pública:</strong> Brigadas de vacunación, control de dengue y SISBÉN.</li>
+            <li><strong>2025–2026 (Alcaldía):</strong> <strong>$3.510 M</strong> en pavimento y redes EPM tras <strong>40 años</strong>.</li>
+            <li><strong>Salud extramural:</strong> Sin hospital interno; atención en <strong>E.S.E. Hospital del Sur</strong>.</li>
+            <li><strong>Salud Pública:</strong> Vacunación, dengue y <strong>SISBÉN</strong>.</li>
           </ul>
         </div>
 
         <div class="card card-amber">
-          <h3>⛪ Redes y Espacio Público</h3>
+          <h3>⛪ Redes y Espacio</h3>
           <ul>
-            <li><strong>Junta de Acción Comunal (JAC):</strong> Motor político del barrio desde 1989.</li>
-            <li><strong>Cohesión espiritual:</strong> <strong>La Cruz Itagüí</strong> y <strong>Parroquia La Ermita de la Santa Cruz</strong> como soporte emocional.</li>
-            <li><strong>La calle como parque:</strong> Déficit de zonas verdes (< 2 m²/hab); la calle pavimentada es el salón comunitario.</li>
+            <li><strong>JAC (1989):</strong> Motor político comunitario.</li>
+            <li><strong>Cohesión (Alameda):</strong> <strong>La Cruz</strong> y <strong>Parroquia La Ermita</strong>.</li>
+            <li><strong>Déficit verde (OMS):</strong> <strong>&lt; 2 m²/hab</strong>; la calle es el parque.</li>
           </ul>
         </div>
 
         <div class="card card-terracotta">
           <h3>🧭 Vocación del Lugar</h3>
           <ul>
-            <li><strong>1. Residencial Obrera:</strong> Hábitat trabajador junto al empleo industrial y el Metro.</li>
-            <li><strong>2. Economía Vecinal:</strong> Tiendas, talleres, confección y reciclaje en primeros pisos.</li>
-            <li><strong>3. Resistencia Comunitaria:</strong> Símbolo de lucha popular por la dignidad urbana.</li>
+            <li><strong>1. Residencial Obrera:</strong> Junto a industria y Metro.</li>
+            <li><strong>2. Economía Vecinal:</strong> Tiendas, confección y reciclaje.</li>
+            <li><strong>3. Resistencia:</strong> Lucha popular por dignidad urbana.</li>
           </ul>
         </div>
       </div>
     </section>
 
-    <!-- ==================== SLIDE 13: EQUIPAMIENTO COLECTIVO (PARTE 2: CASO RESUELTO) ==================== -->
+    <!-- ==================== SLIDE 12: EQUIPAMIENTO COLECTIVO (PARTE 2: CASO RESUELTO) ==================== -->
     <section class="slide" data-title="Caso Resuelto: Mapeo Institucional">
       <div class="slide-header">
         <div>
-          <div class="kicker">🏛️ Resolución Módulo 2 de “PARTIENDO DE”</div>
+          <div class="kicker">🏛️ Resolución Módulo 2 de “PARTIENDO DE” (GPS Campo / MinSalud)</div>
           <h2 class="slide-title">Caso Resuelto: Mapeo Institucional y Vacíos de Cobertura</h2>
           <p class="slide-subtitle">Georreferenciación de puntos de encuentro y prioridades salubristas.</p>
         </div>
@@ -1328,86 +1313,30 @@
 
       <div class="grid-3">
         <div class="card card-amber">
-          <span class="worked-badge">Paso 1: Delimitación</span>
+          <span class="worked-badge">Paso 1: Delimitación (PBOT)</span>
           <h3 style="margin-top: 8px;">📍 Sector Polígono</h3>
-          <p>Carreras 40 y 41 entre el corredor de la Autopista Sur y la línea férrea del Metro (Comuna 1 de Itagüí). Abarca ~4.000 habitantes en su área de influencia.</p>
+          <p><strong>Cras. 40 y 41</strong> entre Autopista Sur y Metro (Comuna 1 Itagüí) • <strong>~4.000 habitantes</strong>.</p>
         </div>
 
         <div class="card card-teal">
-          <span class="worked-badge">Paso 2: Nodos Activos</span>
-          <h3 style="margin-top: 8px;">🤝 Puntos de Encuentro</h3>
-          <p>Sede de la Junta de Acción Comunal (JAC), referentes religiosos (La Ermita de la Santa Cruz y La Cruz), microtiendas de esquina y el eje peatonal pavimentado.</p>
+          <span class="worked-badge">Paso 2: Nodos (GPS Campo)</span>
+          <h3 style="margin-top: 8px;">🤝 Puntos Activos</h3>
+          <p>Sede <strong>JAC</strong>, <strong>La Ermita de la Santa Cruz</strong>, tiendas de esquina y eje peatonal.</p>
         </div>
 
         <div class="card card-terracotta">
-          <span class="worked-badge">Paso 3: Prioridad Salubrista</span>
-          <h3 style="margin-top: 8px;">🏥 Vacíos Identificados</h3>
-          <p>Necesidad urgente de un parque infantil arborizado interno, un Punto de Atención Primaria en Salud (APS) barrial y pasos peatonales seguros sobre la Autopista Sur.</p>
+          <span class="worked-badge">Paso 3: Prioridad (MinSalud)</span>
+          <h3 style="margin-top: 8px;">🏥 Vacíos Urgentes</h3>
+          <p>Parque infantil arborizado, punto barrial de <strong>APS</strong> y pasos seguros sobre Autopista Sur.</p>
         </div>
       </div>
     </section>
 
-    <!-- ==================== SLIDE 14: TRABAJO Y ECONOMÍA DE LA CALLE ==================== -->
-    <section class="slide" data-title="Trabajo y Economía Callejera">
-      <div class="slide-header">
-        <div>
-          <div class="kicker">🛠️ Determinación Laboral • Módulo 3</div>
-          <h2 class="slide-title">Trabajo, Precariedad y Economía de la Calle</h2>
-          <p class="slide-subtitle">“Cuando no hay trabajo la vida se pudre; cuando el trabajo no tiene alma, la vida se asfixia” (Benach, p. 104).</p>
-        </div>
-      </div>
-
-      <div class="grid-2">
-        <div class="card card-terracotta">
-          <h3>⚙️ Estructura Ocupacional</h3>
-          <ul>
-            <li><strong>Informalidad (~60%):</strong> Sin contrato, ARL ni pensión; trabajar al día para comer al día.</li>
-            <li><strong>Recicladores de oficio:</strong> Herencia fundacional expuesta a sobreesfuerzo lumbar y sol.</li>
-            <li><strong>Economía callejera y doméstica:</strong>
-              <br>• <em>Ventas ambulantes:</em> Fritos, tintos y comidas rápidas hacia la Autopista Sur.
-              <br>• <em>Vivienda productiva:</em> Tiendas, talleres y <strong>confección a destajo</strong> (doble jornada femenina).
-            </li>
-            <li><strong>Formal precarizado:</strong> Operarios, vigilantes y aseadoras con contratos temporales (1 SMMLV).</li>
-          </ul>
-        </div>
-
-        <div class="card card-teal">
-          <h3>📋 Casos Prácticos Resueltos</h3>
-          <div class="tabs-header" style="margin-top: 8px;">
-            <button class="tab-btn active" onclick="openTab(event, 'tabDonJose')">🏪 Caso 1: Microtienda Don José</button>
-            <button class="tab-btn" onclick="openTab(event, 'tabVentasCalle')">🍢 Caso 2: Ventas Ambulantes</button>
-          </div>
-
-          <div id="tabDonJose" class="tab-pane active">
-            <div class="worked-box" style="margin-top: 4px;">
-              <span class="worked-badge">Caso 1: Don José (62 años, tienda en casa sin empleados)</span>
-              <ul style="font-size: 1.05rem; margin-top: 6px;">
-                <li><strong>1. Unidad productiva:</strong> Subsistencia familiar en vivienda de uso mixto.</li>
-                <li><strong>2. Seguridad Social:</strong> Ingreso < 1 SMMLV ➔ <strong>Régimen Subsidiado (SISBÉN IV)</strong>, sin ARL ni pensión.</li>
-                <li><strong>3. Riesgo en salud:</strong> Jornadas de 15 h/día, sedentarismo, estrés por “el fiado” y vejez desprotegida.</li>
-              </ul>
-            </div>
-          </div>
-
-          <div id="tabVentasCalle" class="tab-pane">
-            <div class="worked-box" style="margin-top: 4px;">
-              <span class="worked-badge" style="background: var(--terracotta);">Caso 2: Puesto de fritos en borde de Autopista Sur</span>
-              <ul style="font-size: 1.05rem; margin-top: 6px;">
-                <li><strong>1. Exigencia física:</strong> Humo diésel ($PM_{2.5}$) + vapores de aceite + >8 h de pie (várices y lumbalgia).</li>
-                <li><strong>2. Riesgo alimentario:</strong> Sin agua potable en acera, polvo vial y reutilización de aceites.</li>
-                <li><strong>3. Acción salubrista:</strong> Módulos higiénicos con tanque de agua y apoyo a economía popular.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== SLIDE 15: EXPOSICIÓN AMBIENTAL Y EXIGENCIAS FÍSICAS ==================== -->
+    <!-- ==================== SLIDE 13: EXPOSICIÓN AMBIENTAL Y EXIGENCIAS FÍSICAS ==================== -->
     <section class="slide" data-title="Ambiente y Exigencias Físicas">
       <div class="slide-header">
         <div>
-          <div class="kicker">🌫️ Ecología Urbana • Módulo 4</div>
+          <div class="kicker">🌫️ Ecología Urbana • Módulo 4 (SIATA / OMS / SIVIGILA)</div>
           <h2 class="slide-title">Riesgos Ambientales y Carga Física en el Territorio</h2>
           <p class="slide-subtitle">Impacto de la contaminación atmosférica, el ruido crónico y las exigencias biomecánicas.</p>
         </div>
@@ -1415,33 +1344,33 @@
 
       <div class="grid-3">
         <div class="card card-terracotta">
-          <div class="photo-card" style="margin-bottom: 12px;">
-            <img src="assets/aire_valle_aburra.jpg" alt="Contaminación atmosférica en el Valle de Aburrá" onclick="openLightbox(this.src)" style="height: 140px;" />
+          <div class="photo-card" style="margin-bottom: 14px;">
+            <img src="assets/aire_valle_aburra.jpg" alt="Contaminación atmosférica en el Valle de Aburrá" onclick="openLightbox(this.src)" style="height: 155px;" />
           </div>
-          <h3>🫁 1. Calidad del Aire ($PM_{2.5}$)</h3>
-          <p>Efecto cuenco del Valle de Aburrá + corredor de carga pesada explican la alta carga de <strong>IRA en niños</strong> y <strong>EPOC en adultos mayores</strong>.</p>
+          <h3>🫁 1. Aire • PM<sub>2.5</sub> (SIATA)</h3>
+          <p>Efecto cuenco + carga pesada: alta <strong>IRA</strong> infantil y <strong>EPOC</strong> en mayores.</p>
         </div>
 
         <div class="card card-amber">
-          <h3>🔊 2. Ruido Crónico (>75 dB)</h3>
-          <p>El tráfico pesado 24/7 y el paso del Metro superan con creces el límite saludable OMS (55 dB): alteran el sueño, <strong>elevan el cortisol</strong> y disparan la hipertensión y la ansiedad vecinal.</p>
+          <h3>🔊 2. Ruido &gt;75 dB (AMVA/OMS)</h3>
+          <p>Supera el límite <strong>OMS (55 dB)</strong> 24/7: fragmenta el sueño, eleva <strong>cortisol</strong>, hipertensión y ansiedad.</p>
         </div>
 
         <div class="card card-teal">
-          <h3>🦟 3. Vectores y Biomecánica</h3>
+          <h3>🦟 3. Vectores y Carga Física</h3>
           <ul>
-            <li><strong>Residuos y vectores:</strong> Acopio de reciclaje y drenajes estancados favorecen el zancudo <em>Aedes aegypti</em> (<strong>Dengue</strong>).</li>
-            <li><strong>Carga física:</strong> Escaleras empinadas en casas autoconstruidas y puentes largos incrementan el desgaste articular.</li>
+            <li><strong>SIVIGILA:</strong> Acopio de reciclaje y drenajes favorecen <em>Aedes aegypti</em> (<strong>Dengue</strong>).</li>
+            <li><strong>Biomecánica:</strong> Escaleras empinadas y puentes largos desgastan articulaciones.</li>
           </ul>
         </div>
       </div>
     </section>
 
-    <!-- ==================== SLIDE 16: DEMOGRAFÍA, SALUD-ENFERMEDAD Y ESTILOS DE VIDA ==================== -->
+    <!-- ==================== SLIDE 14: DEMOGRAFÍA, SALUD-ENFERMEDAD Y ESTILOS DE VIDA ==================== -->
     <section class="slide" data-title="Demografía, Salud y Estilos">
       <div class="slide-header">
         <div>
-          <div class="kicker">📊 Módulos 5 y 6</div>
+          <div class="kicker">📊 Módulos 5 y 6 (ASIS Comuna 1 / SISBÉN IV / DANE)</div>
           <h2 class="slide-title">Demografía, Perfil Epidemiológico y Cultura Barrial</h2>
           <p class="slide-subtitle">Tres generaciones de pobladores, carga de enfermedad y el tejido solidario del “fiado”.</p>
         </div>
@@ -1449,31 +1378,31 @@
 
       <div class="grid-3">
         <div class="card card-teal">
-          <h3>👥 Nativa vs. Usuaria</h3>
+          <h3>👥 Población (DANE)</h3>
           <ul>
-            <li><strong>Nativa (~3.500 hab.):</strong> Fundadores (años 70), generación obrera y juventud actual. Jefatura femenina ~42%.</li>
-            <li><strong>Usuaria / Flotante:</strong> Inquilinos atraídos por arriendos bajos cerca del Metro y obreros de bodegas.</li>
+            <li><strong>Nativa (~3.500 hab.):</strong> Fundadores (años 70), obreros y juventud. <strong>~42%</strong> jefatura femenina.</li>
+            <li><strong>Usuaria:</strong> Inquilinos cerca del Metro y obreros.</li>
           </ul>
-          <div class="worked-box" style="margin-top: 10px; padding: 10px 12px;">
-            <span class="worked-badge">Índice de Dependencia</span>
-            <p style="font-size: 0.95rem; color: var(--text-main);">
-              Base $N = 2.500$: <15 años (550) + >65 años (300) / 15–64 años (1.650) = <strong>51,5%</strong>.
+          <div class="worked-box" style="margin-top: 12px; padding: 12px 14px;">
+            <span class="worked-badge">Índice Dependencia (DANE)</span>
+            <p style="color: var(--text-main);">
+              Base N = 2.500: (&lt;15: 550 + &gt;65: 300) / 1.650 = <strong>51,5%</strong>.
             </p>
           </div>
         </div>
 
         <div class="card card-terracotta">
-          <h3>🏥 Perfil Epidemiológico</h3>
+          <h3>🏥 Perfil (ASIS Comuna 1)</h3>
           <div class="bar-item" style="margin-top: 6px;">
-            <div class="bar-top"><span>Régimen Subsidiado (SISBÉN IV)</span><span style="color: var(--amber);">~52%</span></div>
+            <div class="bar-top"><span>Subsidiado (SISBÉN IV)</span><span style="color: var(--amber);">~52%</span></div>
             <div class="bar-track"><div class="bar-fill" style="width: 52%; background: var(--amber);"></div></div>
           </div>
           <div class="bar-item">
-            <div class="bar-top"><span>Régimen Contributivo (1 SMMLV)</span><span style="color: var(--teal-light);">~43%</span></div>
+            <div class="bar-top"><span>Contributivo (1 SMMLV)</span><span style="color: var(--teal-light);">~43%</span></div>
             <div class="bar-track"><div class="bar-fill" style="width: 43%; background: var(--teal-light);"></div></div>
           </div>
           <ul>
-            <li><strong>Crónicas:</strong> Hipertensión, Diabetes tipo 2 y EPOC.</li>
+            <li><strong>Crónicas:</strong> HTA, Diabetes tipo 2 y EPOC.</li>
             <li><strong>Infecciosas:</strong> IRA, asma, EDA y Dengue.</li>
             <li><strong>Mortalidad:</strong> 1° Circulatorias, 2° Tumores, 3° Respiratorias.</li>
           </ul>
@@ -1482,25 +1411,24 @@
         <div class="card card-amber">
           <h3>🍲 Alimentación e Identidad</h3>
           <ul>
-            <li><strong>Saciedad económica:</strong> Dieta alta en harinas, fritos y azúcares por alto costo de proteínas y verduras.</li>
-            <li><strong>“El Fiado”:</strong> Crédito solidario a palabra en la tienda de esquina ante semanas sin ingreso.</li>
-            <li><strong>Identidad:</strong> Orgullo obrero, convite y resistencia comunal.</li>
+            <li><strong>Saciedad económica:</strong> Harinas, fritos y azúcares por costo.</li>
+            <li><strong>“El Fiado” (Campo):</strong> Crédito solidario en tienda de esquina.</li>
           </ul>
-          <div class="worked-box" style="margin-top: 10px; padding: 10px 12px;">
-            <span class="worked-badge" style="background: var(--terracotta);">Entorno Alimentario</span>
-            <p style="font-size: 0.95rem; color: var(--text-main);">
-              Comer saludable cuesta >65% de 1 SMMLV. <strong>Solución:</strong> Mercados populares.
+          <div class="worked-box" style="margin-top: 12px; padding: 12px 14px;">
+            <span class="worked-badge" style="background: var(--terracotta);">Canasta (DANE / FAO)</span>
+            <p style="color: var(--text-main);">
+              Dieta sana cuesta <strong>&gt;65% de 1 SMMLV</strong> → mercados populares.
             </p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ==================== SLIDE 17: SÍNTESIS MULTIESCALAR (PARTE 1) ==================== -->
+    <!-- ==================== SLIDE 15: SÍNTESIS MULTIESCALAR (PARTE 1) ==================== -->
     <section class="slide" data-title="Síntesis Multiescalar">
       <div class="slide-header">
         <div>
-          <div class="kicker">🌎 Síntesis Multiescalar • Numeral 5</div>
+          <div class="kicker">🌎 Síntesis Multiescalar • Numeral 5 (Jaime Breilh / Benach)</div>
           <h2 class="slide-title">Relación Multiescalar: Barrio – Ciudad – Región – País</h2>
           <p class="slide-subtitle">Cómo los procesos estructurales del país se expresan en la vida cotidiana de La Santa Cruz.</p>
         </div>
@@ -1508,25 +1436,25 @@
 
       <div class="grid-3">
         <div class="card card-terracotta">
-          <h3>1️⃣ MODOS DE VIDA (País / Región)</h3>
-          <p><strong>Colombia y Antioquia:</strong> Informalidad (~56%), migración campo-ciudad desde el suroeste, desigualdad (Gini >0,53) y fragmentación del sistema sanitario (Ley 100).</p>
+          <h3>1️⃣ MODOS DE VIDA (País)</h3>
+          <p><strong>Colombia / Antioquia (DANE):</strong> <strong>~56%</strong> informalidad, migración rural, <strong>Gini &gt;0,53</strong> y <strong>Ley 100</strong>.</p>
         </div>
         <div class="card card-teal">
-          <h3>2️⃣ CONDICIONES (Ciudad / Barrio)</h3>
-          <p><strong>Itagüí – Comuna 1:</strong> Asentamiento sobre antiguo botadero, encajonamiento entre Autopista Sur ($PM_{2.5}$) e industrias, y conquista del pavimento (2025–2026).</p>
+          <h3>2️⃣ CONDICIONES (Barrio)</h3>
+          <p><strong>Itagüí – Comuna 1:</strong> Antiguo botadero, frontera <strong>PM<sub>2.5</sub></strong> e industria, y pavimento <strong>2025–2026</strong>.</p>
         </div>
         <div class="card card-amber">
-          <h3>3️⃣ ESTILOS DE VIDA (Cotidiano)</h3>
-          <p><strong>Hogar e individuo:</strong> Consumo diario mediado por “el fiado”, jornadas extensas de trabajo informal y redes vecinales de apoyo mutuo (JAC y parroquia).</p>
+          <h3>3️⃣ ESTILOS DE VIDA (Hogar)</h3>
+          <p><strong>Cotidiano (Campo):</strong> Compra al día con <strong>“el fiado”</strong>, jornadas largas y redes <strong>JAC</strong>.</p>
         </div>
       </div>
     </section>
 
-    <!-- ==================== SLIDE 17: CONCLUSIÓN FINAL Y RECORRIDO TERRITORIAL ==================== -->
+    <!-- ==================== SLIDE 16: CONCLUSIÓN FINAL Y RECORRIDO TERRITORIAL ==================== -->
     <section class="slide" data-title="Conclusión Salubrista">
       <div class="slide-header">
         <div>
-          <div class="kicker">🌅 Conclusión Salubrista • Numeral 5</div>
+          <div class="kicker">🌅 Conclusión Salubrista • Numeral 5 (Benach Cap. X / Jordi Gol)</div>
           <h2 class="slide-title">Objeto, Transformación y Finalidad en Salud Pública</h2>
           <p class="slide-subtitle">“Aprender a mirar hasta llegar a ver... Defender la salud, defender la alegría” (Joan Benach).</p>
         </div>
@@ -1534,30 +1462,30 @@
 
       <div class="grid-2" style="grid-template-columns: 1.55fr 0.85fr; align-items: stretch;">
         <div style="display: flex; flex-direction: column; gap: 16px; justify-content: center;">
-          <div class="card card-terracotta" style="padding: 20px 24px;">
-            <strong style="color: var(--terracotta-light); display: block; font-size: 1.15rem; margin-bottom: 6px;">🔬 OBJETO DE ESTUDIO</strong>
-            <p>El <strong>proceso salud-enfermedad-cuidado colectivo</strong> en su determinación histórica, territorial y social.</p>
+          <div class="card card-terracotta" style="padding: 22px 26px;">
+            <h3>🔬 OBJETO DE ESTUDIO</h3>
+            <p><strong>Proceso salud-enfermedad-cuidado colectivo</strong> en su determinación histórica y territorial.</p>
           </div>
-          <div class="card card-teal" style="padding: 20px 24px;">
-            <strong style="color: var(--teal-light); display: block; font-size: 1.15rem; margin-bottom: 6px;">🛠️ TRABAJO Y TRANSFORMACIÓN</strong>
-            <p><em>“Diagnosticar y no actuar no es ético”</em> (Benach): pavimentar calles, sanear viviendas y dignificar el trabajo popular.</p>
+          <div class="card card-teal" style="padding: 22px 26px;">
+            <h3>🛠️ TRABAJO Y TRANSFORMACIÓN</h3>
+            <p><em>“Diagnosticar y no actuar no es ético”</em> (<strong>Benach, Cap. X</strong>): pavimentar, sanear y dignificar el trabajo.</p>
           </div>
-          <div class="card card-amber" style="padding: 20px 24px;">
-            <strong style="color: var(--amber); display: block; font-size: 1.15rem; margin-bottom: 6px;">🌅 FINALIDAD ÉTICO-POLÍTICA</strong>
-            <p>Equidad y justicia social para una vida <strong>“autónoma, solidaria y gozosa”</strong> (Jordi Gol).</p>
+          <div class="card card-amber" style="padding: 22px 26px;">
+            <h3>🌅 FINALIDAD ÉTICO-POLÍTICA</h3>
+            <p>Justicia social para una vida <strong>“autónoma, solidaria y gozosa”</strong> (<strong>Jordi Gol</strong>).</p>
           </div>
         </div>
 
         <div class="card card-teal" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;">
-          <h3 style="margin-bottom: 10px; font-size: 1.15rem;">🛵 Recorrido por La Santa Cruz (2026)</h3>
+          <h3 style="margin-bottom: 10px;">🛵 Recorrido por La Santa Cruz (2026)</h3>
           <div style="width: 100%; max-width: 280px; aspect-ratio: 9 / 16; border-radius: 16px; overflow: hidden; background: #000; box-shadow: 0 12px 32px rgba(0,0,0,0.45); border: 1px solid var(--border-subtle);">
             <video controls playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover; display: block;">
               <source src="assets/recorrido_santa_cruz.mp4" type="video/mp4" />
               Tu navegador no soporta la reproducción de video HTML5.
             </video>
           </div>
-          <p style="font-size: 0.88rem; margin-top: 10px; text-align: center; color: var(--text-muted);">
-            Transformación vial de las Carreras 40 y 41 vista desde el territorio.
+          <p style="font-size: 1.05rem; margin-top: 10px; text-align: center; color: var(--text-muted);">
+            Transformación vial de las Carreras 40 y 41.
           </p>
         </div>
       </div>
