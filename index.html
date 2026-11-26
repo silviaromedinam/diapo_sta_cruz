@@ -151,6 +151,26 @@
       transform: translateY(-1px);
     }
 
+    .nav-dock-btn.is-presenting {
+      background: var(--teal);
+      border-color: var(--teal-light);
+      color: #fff;
+    }
+
+    body.presentation-mode .slide {
+      justify-content: center;
+      padding-bottom: 64px;
+    }
+
+    body.presentation-mode .floating-nav-dock {
+      opacity: 0.32;
+      transition: opacity 0.25s ease;
+    }
+
+    body.presentation-mode .floating-nav-dock:hover {
+      opacity: 1;
+    }
+
     .nav-dock-counter {
       font-family: 'Plus Jakarta Sans', monospace;
       font-size: 0.92rem;
@@ -844,6 +864,7 @@
     <button class="nav-dock-btn" onclick="prevSlide()" title="Diapositiva anterior (Flecha Izquierda)">◀ Anterior</button>
     <span class="nav-dock-counter" id="dockCounter">01 / 16</span>
     <button class="nav-dock-btn" onclick="nextSlide()" title="Siguiente diapositiva (Flecha Derecha)">Siguiente ▶</button>
+    <button class="nav-dock-btn" id="presentModeBtn" onclick="togglePresentationMode()" title="Pantalla completa / Modo presentación (Tecla F)">⛶ Modo Presentación</button>
   </nav>
 
   <!-- LIGHTBOX -->
@@ -1560,7 +1581,49 @@
       goToSlide(currentSlide - 1);
     }
 
-    // Navegación con teclado: Solo flechas izquierda/derecha cambian de diapositiva; arriba/abajo y espacio permiten bajar y leer
+    function syncPresentationBtn() {
+      const btn = document.getElementById('presentModeBtn');
+      const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+      const isPres = isFs || document.body.classList.contains('presentation-mode');
+      if (btn) {
+        btn.classList.toggle('is-presenting', isPres);
+        btn.textContent = isPres ? '✕ Salir Presentación' : '⛶ Modo Presentación';
+      }
+      if (slides[currentSlide] && slides[currentSlide].querySelector('#map-itagui') && mapInstance) {
+        setTimeout(() => mapInstance.invalidateSize(), 180);
+      }
+    }
+
+    async function togglePresentationMode() {
+      const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+      const docEl = document.documentElement;
+      if (!isFs && !document.body.classList.contains('presentation-mode')) {
+        document.body.classList.add('presentation-mode');
+        try {
+          if (docEl.requestFullscreen) await docEl.requestFullscreen();
+          else if (docEl.webkitRequestFullscreen) docEl.webkitRequestFullscreen();
+        } catch (_) {}
+      } else {
+        document.body.classList.remove('presentation-mode');
+        try {
+          if (isFs) {
+            if (document.exitFullscreen) await document.exitFullscreen();
+            else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+          }
+        } catch (_) {}
+      }
+      syncPresentationBtn();
+    }
+
+    function handleFullscreenChange() {
+      const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+      if (!isFs) document.body.classList.remove('presentation-mode');
+      syncPresentationBtn();
+    }
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+
+    // Navegación con teclado: Flechas izquierda/derecha cambian de diapositiva; tecla F activa/desactiva Modo Presentación
     document.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowRight') {
         e.preventDefault();
@@ -1568,6 +1631,9 @@
       } else if (e.key === 'ArrowLeft') {
         e.preventDefault();
         prevSlide();
+      } else if ((e.key === 'f' || e.key === 'F') && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        e.preventDefault();
+        togglePresentationMode();
       } else if (e.key === 'Escape') {
         closeLightbox();
       }
